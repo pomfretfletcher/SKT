@@ -1,0 +1,14 @@
+I can't remember everything, will write important ones as document here.
+
+Skill tree is not drawn nor updated when in any godot screen/tab except 2D. This allows
+	logic issues to not happen when working on a tool script that may have been being
+	currently run. This is done through the custom Skill Tree Pauser plugin within addons
+	folder.
+
+Skill tree is composed of three main controls:
+	SkillNode:
+		Where skills are stored, visuallised and upgraded
+	SkillNodeConnection:
+		Display connections between skills, allowing pre requisites of skills to be 
+	ConnectionSubNode:
+		

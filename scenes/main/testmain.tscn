@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://c41exsxmnlkth"]
+
+[ext_resource type="Script" uid="uid://bc4l50iokd0yj" path="res://scenes/main/logic_nodes/layout_handler.gd" id="1_khfnu"]
+[ext_resource type="Script" uid="uid://5h763uj07lx4" path="res://scenes/main/nodes.gd" id="2_1mt6h"]
+[ext_resource type="PackedScene" uid="uid://2ud8xhsds1xu" path="res://scenes/tree_controls/skill_node.tscn" id="3_onjh1"]
+[ext_resource type="Script" uid="uid://cqgrxah6r3jfh" path="res://data/skill_data/skill_data.gd" id="4_hs2wk"]
+[ext_resource type="Script" uid="uid://cao4xy0vsnqcj" path="res://scenes/main/node_connections.gd" id="5_oy3c2"]
+[ext_resource type="PackedScene" uid="uid://d70eulefynr3" path="res://scenes/tree_controls/skill_node_connection.tscn" id="6_yde8h"]
+[ext_resource type="Script" uid="uid://b4uav0iwy1v2g" path="res://data/unlock_conditions/full_unlock_uc.gd" id="7_khfnu"]
+
+[sub_resource type="Resource" id="Resource_d5pho"]
+script = ExtResource("4_hs2wk")
+name = "Fire3"
+
+[sub_resource type="Resource" id="Resource_mifry"]
+script = ExtResource("7_khfnu")
+
+[node name="Node" type="Node" unique_id=994662732]
+
+[node name="LayoutHandler" type="Node" parent="." unique_id=2010657750]
+script = ExtResource("1_khfnu")
+
+[node name="Nodes" type="Control" parent="." unique_id=1970789313]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_1mt6h")
+
+[node name="SkillNode1" parent="Nodes" unique_id=1253674025 instance=ExtResource("3_onjh1")]
+layout_mode = 0
+offset_left = 198.0
+offset_top = 144.0
+offset_right = 198.0
+offset_bottom = 144.0
+skill_data = SubResource("Resource_d5pho")
+
+[node name="SkillNode2" parent="Nodes" unique_id=2074713867 instance=ExtResource("3_onjh1")]
+layout_mode = 0
+offset_left = 639.0
+offset_top = 126.0
+offset_right = 639.0
+offset_bottom = 126.0
+skill_data = SubResource("Resource_d5pho")
+
+[node name="NodeConnections" type="Control" parent="." unique_id=287125359]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("5_oy3c2")
+
+[node name="SkillNodeConnection1" parent="NodeConnections" unique_id=704870078 node_paths=PackedStringArray("start_node", "end_node") instance=ExtResource("6_yde8h")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 198.0
+offset_top = 144.0
+offset_right = 599.3672
+offset_bottom = 109.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.040793683
+start_node = NodePath("../../Nodes/SkillNode1")
+end_node = NodePath("../../Nodes/SkillNode2")
+unlock_condition = SubResource("Resource_mifry")

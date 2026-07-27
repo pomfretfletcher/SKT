@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://2ud8xhsds1xu"]
+
+[ext_resource type="Script" uid="uid://sglhomue6ugh" path="res://scenes/tree_controls/skill_node.gd" id="1_d801o"]
+[ext_resource type="Script" uid="uid://cqgrxah6r3jfh" path="res://data/skill_data/skill_data.gd" id="2_wouar"]
+[ext_resource type="Script" uid="uid://bkooxndggq18d" path="res://data/unlock_types/single_level_ut.gd" id="3_wouar"]
+[ext_resource type="Texture2D" uid="uid://vcm8igdnq7ws" path="res://assets/red_circle.png" id="4_ev4xc"]
+[ext_resource type="Texture2D" uid="uid://cl526acbmt00m" path="res://assets/black_circle.png" id="5_ovj30"]
+
+[sub_resource type="Resource" id="Resource_5wl0m"]
+resource_local_to_scene = true
+script = ExtResource("3_wouar")
+metadata/_custom_type_script = "uid://bkooxndggq18d"
+
+[sub_resource type="Resource" id="Resource_d801o"]
+resource_local_to_scene = true
+script = ExtResource("2_wouar")
+unlock_type = SubResource("Resource_5wl0m")
+
+[node name="SkillNode" type="Control" unique_id=1253674025 node_paths=PackedStringArray("orb", "shader_orb")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+script = ExtResource("1_d801o")
+skill_data = SubResource("Resource_d801o")
+orb = NodePath("NodeOrb")
+shader_orb = NodePath("NodeOrb/ShaderOrb")
+
+[node name="NodeOrb" type="TextureRect" parent="." unique_id=548561819]
+self_modulate = Color(0.8638137, 0.86381376, 0.8638137, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_ev4xc")
+expand_mode = 1
+
+[node name="ShaderOrb" type="TextureRect" parent="NodeOrb" unique_id=1851121753]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_ovj30")
+expand_mode = 1

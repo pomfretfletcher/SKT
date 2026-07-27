@@ -1,0 +1,204 @@
+{
+	"categories": [
+		{
+			"uuid": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"title": "Task",
+			"color": "ff49ac"
+		}
+	],
+	"stages": [
+		{
+			"uuid": "c70a3e24-2ab2-43d1-889b-af25138353da",
+			"title": "Todo",
+			"tasks": [
+				"01631d65-8425-4996-bf40-2a43aefa109c",
+				"3507f4b3-cfa0-4bea-9702-f42473ddc4eb",
+				"e681a459-e628-4d2f-bb8e-6568d31b51f9",
+				"8efd5cbf-09a0-4fc2-a937-d6d0555a075a",
+				"a2417c55-357d-40e9-9c92-b28401118692"
+			]
+		},
+		{
+			"uuid": "5047fd30-3bd4-4dc6-8cd7-b4b89f9b82ef",
+			"title": "Doing",
+			"tasks": [
+				"85f95f7b-02b1-402a-adad-b79eafd9f086"
+			]
+		},
+		{
+			"uuid": "770ce341-856b-4b52-aac9-97fcd465cec3",
+			"title": "Done",
+			"tasks": [
+				"9a4e3634-beb8-4d68-aea0-1c6647da7ff8",
+				"123eeec6-9843-4714-b502-7a4982a70300",
+				"10e441ce-fe5d-4011-bb0d-9b38f03a0309",
+				"64c034b0-6eec-4bf3-b69b-6c8d29bba0ae",
+				"ac495fd2-b1e9-4844-b53a-a7048a282707",
+				"fabc7e68-32ee-4f1e-9dbd-5a3753a91f94",
+				"ddb7ef2a-0b3f-4ca5-b8f1-f4200b0a9e90",
+				"1f6f49e5-6a52-4134-b590-47b8771f4750",
+				"11ca4bbc-3459-4edc-acef-cc4f0acd99e0",
+				"3dda5bfc-4065-488f-a7b7-c3581b57f84b",
+				"e1e51292-95ec-4167-881f-483f329031d7",
+				"3126901f-3a84-4388-911e-215deef6e95a",
+				"5501a109-3312-4ace-a967-342caa2e08c2",
+				"71300638-8239-447a-897a-0d011e165957"
+			]
+		}
+	],
+	"tasks": [
+		{
+			"uuid": "01631d65-8425-4996-bf40-2a43aefa109c",
+			"title": "Make nodes placed on grid",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "ac495fd2-b1e9-4844-b53a-a7048a282707",
+			"title": "Setup arrows for pointing direction of connection",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "10e441ce-fe5d-4011-bb0d-9b38f03a0309",
+			"title": "Set node images",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "9a4e3634-beb8-4d68-aea0-1c6647da7ff8",
+			"title": "Have expensive tree updating checked less, increase perfomance",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "123eeec6-9843-4714-b502-7a4982a70300",
+			"title": "Add data loading",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "fabc7e68-32ee-4f1e-9dbd-5a3753a91f94",
+			"title": "Make the selection zone for the nodes bigger",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "ddb7ef2a-0b3f-4ca5-b8f1-f4200b0a9e90",
+			"title": "Side popup that shows information about currently selected skill",
+			"description": "Need to add way to view level/unlock status",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "5501a109-3312-4ace-a967-342caa2e08c2",
+			"title": "Functionality for full respec",
+			"description": "Once add skill points, return all spent skill points",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "85f95f7b-02b1-402a-adad-b79eafd9f086",
+			"title": "Functionality for skill points?",
+			"description": "Add other ways of choosing skills than sp?",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "64c034b0-6eec-4bf3-b69b-6c8d29bba0ae",
+			"title": "Make it so cant change a node's unlock type if the unlock type would change it to something that the connections out of it wouldnt work with",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "3507f4b3-cfa0-4bea-9702-f42473ddc4eb",
+			"title": "Not allowing hacing a max level lower than a threshold level and vice versa",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "e1e51292-95ec-4167-881f-483f329031d7",
+			"title": "When changing max level, when checking if would invalidate, you need an array of the previous 'ispartiallyunlocked' statuses and compare it to new ones. This will check whether changing max level changes anything",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "1f6f49e5-6a52-4134-b590-47b8771f4750",
+			"title": "Handle multi level so current level not changed in editor",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "3dda5bfc-4065-488f-a7b7-c3581b57f84b",
+			"title": "Handle unlock type's request unlock/relock methods, we dont want these",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "e681a459-e628-4d2f-bb8e-6568d31b51f9",
+			"title": "Have skill tiers so cant unlock some nodes in a tier without meeting their condition?",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "8efd5cbf-09a0-4fc2-a937-d6d0555a075a",
+			"title": "fix when getting node connections children that only interact with connections, same for nodes",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "71300638-8239-447a-897a-0d011e165957",
+			"title": "sub nodes for arcs",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "a2417c55-357d-40e9-9c92-b28401118692",
+			"title": "load data of sub nodes correctly. Create new sub nodes and position them as is.",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "11ca4bbc-3459-4edc-acef-cc4f0acd99e0",
+			"title": "have sub nodes of a connection automatically be put into the list instead of exporting it, done through get_children, looking only at subnodes",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		},
+		{
+			"uuid": "3126901f-3a84-4388-911e-215deef6e95a",
+			"title": "Create function in spawner to make subnode, need to make edited scene root owner",
+			"description": "",
+			"category": "2b63a653-4eec-4efd-96c4-2072976d99df",
+			"steps": []
+		}
+	],
+	"layout": {
+		"columns": [
+			[
+				"c70a3e24-2ab2-43d1-889b-af25138353da"
+			],
+			[
+				"5047fd30-3bd4-4dc6-8cd7-b4b89f9b82ef"
+			],
+			[
+				"770ce341-856b-4b52-aac9-97fcd465cec3"
+			]
+		]
+	}
+}
