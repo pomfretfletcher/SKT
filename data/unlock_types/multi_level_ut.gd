@@ -2,93 +2,84 @@
 class_name MultiLevel_UT
 extends UnlockType
 
+var _changing_max_level_for_test: bool = false
 @export var max_level: int:
 	set(v):
-		if !setup:
+		# When reconstructing a saved skill tree, we simply need to produce the saved state.
+		# However during this recreation phase, the checks done within SkillTreeChecks will
+		# almost always come out as false as only part of it is completed and 'valid' until
+		# recreation is fully done. We use the _setup variable to make sure that we can recreate
+		# the saved state without having to check validity.
+		if not _setup:
 			max_level = v
+			size_point_cost_array()
+			return
 
-		var prev_value := max_level
-		var keep_change := true
-
-		if attached_node and !override_checks:
-			var cur_condition_bools: Array[bool] = []
-			var new_condition_bools: Array[bool] = []
-
-			for connection in attached_node.result_connections:
-				cur_condition_bools.append(connection.unlock_condition.is_condition_reached(connection))
-
+		# When checking validity of the new max level value, we must test whether the max level
+		# changing causes any invalidity. Thus, we use this boolean value to make sure it does
+		# not attempt to change max level to check the change and then ask skilltreechecks to
+		# make another validity check. Without this, it would cause a recursion loop and the
+		# software would crash.
+		if _changing_max_level_for_test:
 			max_level = v
+			return
 
-			for connection in attached_node.result_connections:
-				new_condition_bools.append(connection.unlock_condition.is_condition_reached(connection))
+		# The attached node not being a value should not be an issue, however this is here in
+		# order to prevent errors or crashes should any issue with that come up. It will print
+		# this error so debugging can be taken out while not causing problems with running the
+		# validity checks.
+		if attached_node == null:
+			return
 
-			if cur_condition_bools != new_condition_bools:
-				print("Cannot change max level as it would cause invalidity for result skills.")
-				keep_change = false
+		var result: ValidityStatement = SkillTreeChecks.is_new_max_level_valid(v, self)
 
-		if !keep_change:
-			max_level = prev_value
-		else:
+		if result == null:
+			return
+		elif result.validity:
 			max_level = v
 			current_level = current_level
 			size_point_cost_array()
+		else:
+			print(result.reason)
 
-var changing_current_level_by_script := false
+var _changing_current_level_by_script := false
 @export var current_level: int = 0:
 	set(v):
-		if !setup:
+		# When reconstructing a saved skill tree, we simply need to produce the saved state.
+		# However during this recreation phase, the checks done within SkillTreeChecks will
+		# almost always come out as false as only part of it is completed and 'valid' until
+		# recreation is fully done. We use the _setup variable to make sure that we can recreate
+		# the saved state without having to check validity.
+		if not _setup:
 			current_level = v
 			return
-		# Do not allow changing the value of current level in inspector alone
-		# Must use buttons to use level_up and level_down functions
-		if !changing_current_level_by_script:
+
+		# Prevents changing of current level by any means other than through this class's
+		# _progress_skill and _regress_skill methods.
+		if not _changing_current_level_by_script:
 			return
 
-		var keep_change := true
-
-		if !override_checks:
-			if v > max_level:
-				print("Cannot be levelled up as cannot be higher than max level.")
-				keep_change = false
-			elif v < 0:
-				print("Cannot be levelled down as cannot be lower than 0.")
-				keep_change = false
-
-		# Cannot decrease level if cannot be regressed
-		if v < current_level and !override_checks:
-			if attached_node and !attached_node.can_be_regressed:
-				print("Cannot be levelled down as that would cause issues for result skills.")
-				keep_change = false
-		if v > current_level and !override_checks:
-			if attached_node and !attached_node.can_be_progressed:
-				print("Cannot be levelled up as previous skills not all unlocked.")
-				keep_change = false
-
-		if !keep_change:
+		# The attached node not being a value should not be an issue, however this is here in
+		# order to prevent errors or crashes should any issue with that come up. It will print
+		# this error so debugging can be taken out while not causing problems with running the
+		# validity checks.
+		if attached_node == null:
 			return
-		else:
+
+		var result: ValidityStatement = SkillTreeChecks.is_new_current_level_valid(v, self)
+
+		if result == null:
+			return
+		elif result.validity:
 			current_level = clampi(v, 0, max_level)
+		else:
+			print(result.reason)
 
 @export_tool_button("Level Up")
 var but_levelup = _progress_skill
 
 @export_tool_button("Level Down")
 var but_leveldown = _regress_skill
-
-@export_tool_button("Increase Max and Current Level")
-var but_increasemaxandcurrentlevel = func():
-	override_checks = true
-	max_level += 1
-	current_level += 1
-	override_checks = false
-
-@export_tool_button("Decrease Max and Current Level")
-var but_decreasemaxandcurrentlevel = func():
-	override_checks = true
-	if current_level != max_level:
-		current_level -= 1
-	max_level -= 1
-	override_checks = false
 
 @export var point_cost_per_level: Array[int]:
 	set(v):
@@ -121,17 +112,15 @@ func _is_unlocked() -> bool:
 
 
 func _progress_skill():
-	if !attached_node or attached_node.can_be_progressed:
-		changing_current_level_by_script = true
-		current_level += 1
-		changing_current_level_by_script = false
+	_changing_current_level_by_script = true
+	current_level += 1
+	_changing_current_level_by_script = false
 
 
 func _regress_skill():
-	if !attached_node or attached_node.can_be_regressed:
-		changing_current_level_by_script = true
-		current_level -= 1
-		changing_current_level_by_script = false
+	_changing_current_level_by_script = true
+	current_level -= 1
+	_changing_current_level_by_script = false
 
 
 func _get_progress_text() -> String:
@@ -156,3 +145,7 @@ func _decide_full_upgrade_point_cost() -> int:
 		if i >= current_level:
 			result += point_cost_per_level[i]
 	return result
+
+#func _init() -> void:
+#super()
+#POINT_COST_PROPERTY_NAME = "point_cost_per_level"

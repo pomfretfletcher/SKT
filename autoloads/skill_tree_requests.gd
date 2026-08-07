@@ -48,7 +48,29 @@ signal request_load_data
 signal request_create_node
 
 @warning_ignore("unused_signal")
-signal request_create_connection
+signal request_create_branch
 
 @warning_ignore("unused_signal")
-signal request_create_subnode(parent: SkillNodeConnection)
+signal request_create_followpoint(parent: SkillBranch)
+
+## Request that will cause the TreeUpdator node to toggle whether it is updating the
+## skill tree. Mainly used by the SkillTreePauser plugin to pause tree processing
+## when in any screen other than 2D to prevent logic issues when editing tool scripts.
+## [br][br]
+## Also used to reduce logic errors when loading new data.
+@warning_ignore("unused_signal")
+signal request_toggle_tree_drawing(mode: bool)
+
+## Request that will cause the TreeUpdator node to toggle whether it is updating the
+## skill tree. Mainly used by the SkillTreePauser plugin to pause tree processing
+## when in any screen other than 2D to prevent logic issues when editing tool scripts.
+## [br][br]
+## Also used to reduce logic errors when loading new data.
+@warning_ignore("unused_signal")
+signal request_toggle_tree_updating(mode: bool)
+
+@warning_ignore("unused_signal")
+signal request_prepare_for_save
+
+@warning_ignore("unused_signal")
+signal request_prepare_for_load

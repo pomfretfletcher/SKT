@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://d70eulefynr3"]
+
+[ext_resource type="Script" uid="uid://damuwhacrr1ro" path="res://scenes/tree_controls/skill_branch.gd" id="1_x01xl"]
+[ext_resource type="Texture2D" uid="uid://caf2hvqoefluf" path="res://assets/white_triangle.png" id="3_oumg0"]
+[ext_resource type="Texture2D" uid="uid://cnq1caiv8pcd7" path="res://assets/triangle.png" id="4_r78uc"]
+
+[node name="SkillNodeConnection" type="Control" unique_id=704870078 node_paths=PackedStringArray("node_arc", "shader_arc", "arrow", "shader_arrow")]
+z_index = -1
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_x01xl")
+node_arc = NodePath("NodeArc")
+shader_arc = NodePath("NodeArc/ShaderArc")
+arrow = NodePath("Arrow")
+shader_arrow = NodePath("Arrow/ShaderArrow")
+
+[node name="NodeArc" type="ColorRect" parent="." unique_id=2120933096]
+layout_mode = 1
+offset_right = 50.0
+offset_bottom = 5.0
+
+[node name="ShaderArc" type="ColorRect" parent="NodeArc" unique_id=1073188770]
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 5.0
+color = Color(0, 0, 0, 1)
+
+[node name="Arrow" type="TextureRect" parent="." unique_id=1692539048]
+layout_mode = 0
+offset_top = -1.0
+offset_right = 12.0
+offset_bottom = 11.0
+texture = ExtResource("3_oumg0")
+expand_mode = 1
+
+[node name="ShaderArrow" type="TextureRect" parent="Arrow" unique_id=1010241418]
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 12.0
+texture = ExtResource("4_r78uc")
+expand_mode = 1

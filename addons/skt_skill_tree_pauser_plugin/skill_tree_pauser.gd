@@ -1,18 +1,25 @@
 @tool
 extends EditorPlugin
 
+func _ready() -> void:
+	if not Engine.is_editor_hint():
+		_on_main_screen_changed("2D")
+
+
 func _enter_tree():
-	main_screen_changed.connect(_on_main_screen_changed)
+	if Engine.is_editor_hint():
+		main_screen_changed.connect(_on_main_screen_changed)
 
 
 func _exit_tree():
-	main_screen_changed.disconnect(_on_main_screen_changed)
+	if Engine.is_editor_hint():
+		main_screen_changed.disconnect(_on_main_screen_changed)
 
 
 func _on_main_screen_changed(screen_name: String):
 	if screen_name == "2D":
-		SkillTreeEvents.toggle_updating.emit(true)
-		SkillTreeEvents.toggle_drawing.emit(true)
+		SkillTreeRequests.request_toggle_tree_updating.emit(true)
+		SkillTreeRequests.request_toggle_tree_drawing.emit(true)
 	else:
-		SkillTreeEvents.toggle_updating.emit(false)
-		SkillTreeEvents.toggle_drawing.emit(false)
+		SkillTreeRequests.request_toggle_tree_updating.emit(false)
+		SkillTreeRequests.request_toggle_tree_drawing.emit(false)

@@ -7,6 +7,8 @@ var cur_skill: SkillNode
 @export var locked_tick_box_texture: Texture2D
 @export var partial_unlocked_tick_box_texture: Texture2D
 @export var fully_unlocked_tick_box_texture: Texture2D
+
+@export_subgroup("Visual Component References")
 @export var skill_name: Label
 @export var skill_icon: TextureRect
 @export var skill_description: Label
@@ -21,7 +23,7 @@ func _ready() -> void:
 	)
 	SkillTreeEvents.update_tree.connect(
 		func():
-			if !cur_skill or !cur_skill.skill_data or !cur_skill.skill_data.unlock_type:
+			if cur_skill == null or cur_skill.skill_data == null or cur_skill.skill_data.unlock_type == null:
 				return
 
 			var cur_skill_data = cur_skill.skill_data
@@ -31,9 +33,9 @@ func _ready() -> void:
 
 			var partially_unlocked: bool = cur_skill.is_unlocked()
 			var fully_unlocked: bool = cur_skill.is_completed()
-			if !partially_unlocked and !fully_unlocked:
+			if not partially_unlocked and not fully_unlocked:
 				unlock_tick_box.texture = locked_tick_box_texture
-			elif partially_unlocked and !fully_unlocked:
+			elif partially_unlocked and not fully_unlocked:
 				unlock_tick_box.texture = partial_unlocked_tick_box_texture
 			elif partially_unlocked and fully_unlocked:
 				unlock_tick_box.texture = fully_unlocked_tick_box_texture

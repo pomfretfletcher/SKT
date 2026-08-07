@@ -2,19 +2,12 @@
 
 [ext_resource type="Script" uid="uid://sglhomue6ugh" path="res://scenes/tree_controls/skill_node.gd" id="1_d801o"]
 [ext_resource type="Script" uid="uid://cqgrxah6r3jfh" path="res://data/skill_data/skill_data.gd" id="2_wouar"]
-[ext_resource type="Script" uid="uid://bkooxndggq18d" path="res://data/unlock_types/single_level_ut.gd" id="3_wouar"]
 [ext_resource type="Texture2D" uid="uid://vcm8igdnq7ws" path="res://assets/red_circle.png" id="4_ev4xc"]
 [ext_resource type="Texture2D" uid="uid://cl526acbmt00m" path="res://assets/black_circle.png" id="5_ovj30"]
-
-[sub_resource type="Resource" id="Resource_5wl0m"]
-resource_local_to_scene = true
-script = ExtResource("3_wouar")
-metadata/_custom_type_script = "uid://bkooxndggq18d"
 
 [sub_resource type="Resource" id="Resource_d801o"]
 resource_local_to_scene = true
 script = ExtResource("2_wouar")
-unlock_type = SubResource("Resource_5wl0m")
 
 [node name="SkillNode" type="Control" unique_id=1253674025 node_paths=PackedStringArray("orb", "shader_orb")]
 layout_mode = 3

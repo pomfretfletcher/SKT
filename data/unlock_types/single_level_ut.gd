@@ -10,7 +10,7 @@ var but_lock = _regress_skill
 var changing_unlock_status_by_script := false
 @export var unlock_status: bool:
 	set(v):
-		if setup and !changing_unlock_status_by_script:
+		if _setup and not changing_unlock_status_by_script:
 			print("Must use unlock and lock buttons/functions to change unlock status.")
 			return
 		unlock_status = v
@@ -62,3 +62,11 @@ func _decide_single_upgrade_point_cost() -> int:
 
 func _decide_full_upgrade_point_cost() -> int:
 	return point_cost
+
+	#func _init() -> void:
+	#super()
+	#POINT_COST_PROPERTY_NAME = "point_cost"
+
+#func _init() -> void:
+#super()
+#POINT_COST_PROPERTY_NAME = "point_cost"

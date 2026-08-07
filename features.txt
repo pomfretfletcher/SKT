@@ -5,10 +5,24 @@ Skill tree is not drawn nor updated when in any godot screen/tab except 2D. This
 	currently run. This is done through the custom Skill Tree Pauser plugin within addons
 	folder.
 
-Skill tree is composed of three main controls:
-	SkillNode:
-		Where skills are stored, visuallised and upgraded
-	SkillNodeConnection:
-		Display connections between skills, allowing pre requisites of skills to be 
-	ConnectionSubNode:
+
+Interaction with SKT Software without custom implementation:
+	Most Interaction will be within the deligated Frontend and within the Skill Tree Controls
+		themselves (The SkillNodes, SkillBranches and BranchFollowPoints). The rest of the nodes
+		within SKT Main are responsible for the Backend processing of the SKT Skill Trees, which
+		means that users can ignore them for basic use.
+	
+	The main interactions the user will need to complete for creating a skill tree are:
+		Spawning SkillNodes, connecting SkillNodes with SkillBranches
+		Positioning SkillNodes on the screen, and altering the path of SkillBranches with
+			BranchFollowPoints
+		Deciding whether they are using the progression tier system, and assigning tiers to 
+			SkillNodes if they are
+		Deciding whether they are using the upgrade cost system, and assigning upgrade costs to
+			SkillNodes if they are
+		Saving and Loading their skill tree data
+		Assigning Unlock Types (the way SkillNodes are upgraded) and Unlock Conditions (the way
+			a SkillBranch between two SkillNodes tell whether the end node of the SkillBranch can be
+			upgraded)
+		Assigning data to hold in SkillNodes
 		

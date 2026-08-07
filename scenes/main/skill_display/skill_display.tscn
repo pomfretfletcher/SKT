@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://kalhaq3uaabl" path="res://assets/grey_tick_box.png" id="3_jq0io"]
 [ext_resource type="Texture2D" uid="uid://bl2p5xnma6dui" path="res://assets/yellow_tick_box.png" id="4_4gukr"]
 [ext_resource type="Texture2D" uid="uid://dhnqgn2g0x5c5" path="res://assets/green_tick_box.png" id="5_2puyb"]
-[ext_resource type="Texture2D" uid="uid://bph482xfsudjr" path="res://assets/Essence & Energy/tile007.png" id="6_vhpwe"]
+[ext_resource type="Texture2D" uid="uid://bph482xfsudjr" path="res://assets/essence_n_energy/tile007.png" id="6_vhpwe"]
 [ext_resource type="Texture2D" uid="uid://bjmp4f63if3rl" path="res://assets/line.png" id="7_6ruv8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i7in8"]

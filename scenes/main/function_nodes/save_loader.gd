@@ -2,48 +2,84 @@
 class_name SKT_SaveLoader
 extends Node
 
-var saved_data: Dictionary
-const SAVE_PATH = "user://savedata.json"
+@export_subgroup("Inspector Node References")
+@export var spawner: SKT_Spawner
+@export var nodes_parent: SKT_NodesParent
+@export var branches_parent: SKT_BranchesParent
+@export var progression_tier_manager: SKT_ProgressionTierManager
+@export var upgrade_cost_manager: SKT_UpgradeCostManager
+
+@export_subgroup("Tool Buttons")
 @export_tool_button("Save Data")
 var but_savedata = save_data
 @export_tool_button("Load Data")
 var but_loaddata = load_data
 
-@export var spawner: SKT_Spawner
-@export var nodes_parent: SKT_NodesParent
-@export var node_connections_parent: SKT_NodeConnectionsParent
+var saved_data: Dictionary
+const SAVE_PATH = "user://savedata.json"
 
 
 func _ready() -> void:
 	if FileAccess.file_exists(SAVE_PATH):
 		load_data()
 
-	SkillTreeRequests.request_save_data.connect(save_data)
-	SkillTreeRequests.request_load_data.connect(load_data)
+	if not SkillTreeRequests.request_save_data.is_connected(save_data):
+		SkillTreeRequests.request_save_data.connect(save_data)
+	if not SkillTreeRequests.request_load_data.is_connected(load_data):
+		SkillTreeRequests.request_load_data.connect(load_data)
 
 
 func save_data() -> void:
 	print("Saving Tree Data")
 	saved_data.clear()
+
+	# Allow any nodes that need to organize their data before saving data occurs
+	SkillTreeRequests.request_prepare_for_save.emit()
+	await get_tree().create_timer(0.5).timeout
+
+	print("Saving Node Data")
+	var node_saved_data: Dictionary
 	for node: SkillNode in nodes_parent.get_nodes():
-		saved_data.set(
+		node_saved_data.set(
 			node.name,
 			{
 				"skill_data_path": save_and_get_path_of_skilldata(node),
-				"previous_connections": format_connections("start", node.previous_connections),
-				"result_connections": format_connections("end", node.result_connections),
-				"control_position": node.position,
+				"position": node.position,
+				"progression_tier": node.progression_tier,
+				"previous_branches": format_branches("end", node.previous_branches),
+				"result_branches": format_branches("start", node.result_branches),
 			},
 		)
+
+	print("Saving System Data")
+	var system_saved_data: Dictionary
+	system_saved_data.set(
+		"progression_tier_manager",
+		{
+			"uses_tiers": progression_tier_manager.use_progression_tiers,
+			"current_tier": progression_tier_manager.current_tier,
+		},
+	)
+	system_saved_data.set(
+		"upgrade_cost_manager",
+		{
+			"upgrade_type": upgrade_cost_manager.upgrade_type,
+			"current_sp": upgrade_cost_manager.current_sp,
+		},
+	)
+
+	saved_data.set("nodes", node_saved_data)
+	saved_data.set("system", system_saved_data)
+
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-	file.store_string(FormatJSON(saved_data))
+	file.store_string(FormatJSON(saved_data, 1))
 	file.close()
 
 	SkillTreeEvents.data_saved.emit()
 
 
 func FormatJSON(value, indent := 0) -> String:
-	var ind = "  ".repeat(indent)
+	var ind = " ".repeat(indent)
 
 	if value is Dictionary:
 		var parts := []
@@ -51,9 +87,9 @@ func FormatJSON(value, indent := 0) -> String:
 			var v = value[key]
 
 			if v is Array or v is Dictionary:
-				parts.append("\n" + ind + "  \"" + str(key) + "\": " + FormatJSON(v, indent + 1))
+				parts.append("\n" + ind + "  \"" + str(key) + "\": " + FormatJSON(v, indent + 2))
 			else:
-				parts.append("\n" + ind + "  \"" + str(key) + "\": " + FormatJSON(v, 0))
+				parts.append("\n" + ind + "  \"" + str(key) + "\": " + FormatJSON(v, indent))
 
 		return "{" + ",".join(parts) + "\n" + ind + "}"
 
@@ -62,13 +98,13 @@ func FormatJSON(value, indent := 0) -> String:
 		if value.size() > 0 and value[0] is Array:
 			var rows := []
 			for row in value:
-				rows.append("\n" + ind + "  " + FormatJSON(row, 0))
+				rows.append("\n" + ind + "  " + FormatJSON(row, indent + 2))
 			return "[" + ",".join(rows) + "\n" + ind + "]"
 		else:
 			# Normal 1D arrays stay inline
 			var parts := []
 			for v in value:
-				parts.append(FormatJSON(v, 0))
+				parts.append(FormatJSON(v, indent))
 			return "[" + ", ".join(parts) + "]"
 
 	else:
@@ -76,97 +112,65 @@ func FormatJSON(value, indent := 0) -> String:
 
 
 func load_data():
+	print("Loading Tree Data")
 	# Open and read json file of save data
 	var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
 	saved_data = JSON.parse_string(file.get_as_text())
 	file.close()
 
+	# Pause updating and drawing until loading is finished - Prevents skt logic nodes
+	# attempt to run processes on control nodes that are being deleted or are not completely
+	# setup yet
+	SkillTreeRequests.request_toggle_tree_updating.emit(false)
+	SkillTreeRequests.request_toggle_tree_drawing.emit(false)
+
+	print("Clearing Current Controls")
+	# Delete all current skill tree controls. Will be remade within loading process
 	for child in nodes_parent.get_nodes():
-		child.queue_free()
-	for child in node_connections_parent.get_connections():
-		child.queue_free()
+		child.free()
+	for child in branches_parent.get_branches():
+		child.free()
+
+	# Use a short delay in order to allow for child.free() to process correctly and for no
+	# logic issues to take place while tree is incomplete
+	# Also allows any nodes that need to prepare for loading data to do so
+	SkillTreeRequests.request_prepare_for_load.emit()
 	await get_tree().create_timer(0.5).timeout
 
+	print("Recreating Nodes")
 	var created_nodes: Dictionary[String, SkillNode]
-	for node_key in saved_data:
-		var entry = saved_data[node_key]
-		var node: SkillNode = spawner.create_node()
-		created_nodes.set(node_key, node)
+	recreate_nodes(saved_data["nodes"], created_nodes)
 
-		var skill_data: SkillData = load(entry["skill_data_path"])
-		var temp = skill_data.duplicate(true)
-		node.skill_data = temp
+	print("Recreating Branches")
+	var created_branches: Dictionary[String, SkillBranch]
+	recreate_branches(saved_data["nodes"], created_nodes, created_branches)
 
-		node.position = SkillTreeFunctions.stringified_vector_to_v2(entry["control_position"])
+	print("Loading System Data")
+	load_system_data(saved_data["system"])
 
-	var created_connections: Dictionary[String, SkillNodeConnection]
-	for node_key in saved_data:
-		var entry = saved_data[node_key]
-		var prev_connections = entry.get("previous_connections")
-		for p_connection in prev_connections:
-			var connection_name = p_connection["connection_name"]
-			var connection: SkillNodeConnection
-			var connected_node = p_connection["connected_node"]
-
-			if connection_name not in created_connections:
-				connection = spawner.create_connection()
-				if "sub_node_positions" in p_connection.keys():
-					create_sub_nodes_for_skill_node_connection(connection, p_connection)
-			if connection_name in created_connections:
-				connection = created_connections[connection_name]
-
-			if p_connection["connection_position"] == "start":
-				connection.start_node = created_nodes[connected_node]
-			elif p_connection["connection_position"] == "end":
-				connection.end_node = created_nodes[connected_node]
-
-			created_connections.set(connection_name, connection)
-
-	for node_key in saved_data:
-		var entry = saved_data[node_key]
-		var res_connections = entry.get("result_connections")
-		for r_connection in res_connections:
-			var connection_name = r_connection["connection_name"]
-			var connection: SkillNodeConnection
-			var connected_node = r_connection["connected_node"]
-
-			if connection_name not in created_connections:
-				connection = spawner.create_connection()
-				if "sub_node_positions" in r_connection.keys():
-					create_sub_nodes_for_skill_node_connection(connection, r_connection)
-			if connection_name in created_connections:
-				connection = created_connections[connection_name]
-
-			if r_connection["connection_position"] == "start":
-				connection.start_node = created_nodes[connected_node]
-			elif r_connection["connection_position"] == "end":
-				connection.end_node = created_nodes[connected_node]
-
-			created_connections.set(connection_name, connection)
-
+	# Allow updating and drawing to occur again, no logic errors should happen from now on
+	SkillTreeRequests.request_toggle_tree_updating.emit(true)
+	SkillTreeRequests.request_toggle_tree_drawing.emit(true)
 	SkillTreeEvents.data_loaded.emit()
 
 
-func format_connections(mode: String, connections: Array[SkillNodeConnection]) -> Array[Dictionary]:
+func format_branches(mode: String, branches: Array[SkillBranch]) -> Array[Dictionary]:
 	var return_array: Array[Dictionary] = []
-	for connection in connections:
-		var con: Dictionary = { }
-		con.set("connected_node", connection.start_node.name if mode == "start" else connection.end_node.name)
-		con.set(
-			"unlock_condition_path",
-			save_and_get_path_of_connection(connection),
-		)
-		con.set("connection_name", connection.name)
-		con.set("connection_position", mode)
-		con.set("arrow_visible", connection.arrow_visible)
-		if !connection.arc_sub_nodes.is_empty():
-			con.set("sub_node_positions", format_sub_nodes_of_connection(connection))
-		return_array.append(con)
+	for branch in branches:
+		var entry: Dictionary = { }
+		entry.set("connected_node", branch.start_node.name if mode == "start" else branch.end_node.name)
+		entry.set("unlock_condition_path", save_and_get_path_of_uc(branch))
+		entry.set("branch_name", branch.name)
+		entry.set("branch_mode", mode)
+		entry.set("arrow_visible", branch.arrow_visible)
+		if not branch.branch_follow_points.is_empty():
+			entry.set("follow_point_positions", format_follow_points_of_branch(branch))
+		return_array.append(entry)
 	return return_array
 
 
 func save_and_get_path_of_skilldata(node: SkillNode) -> String:
-	if !node:
+	if node == null:
 		return ""
 
 	var save_path = "user://saved_skill_data"
@@ -176,7 +180,7 @@ func save_and_get_path_of_skilldata(node: SkillNode) -> String:
 		dir.make_dir(save_path)
 
 	var path = "user://saved_skill_data/" + node.name + ".tres"
-	if !ResourceLoader.exists(path):
+	if not ResourceLoader.exists(path):
 		# Save a new node's skill data
 		ResourceSaver.save(node.skill_data, path)
 	else:
@@ -187,54 +191,124 @@ func save_and_get_path_of_skilldata(node: SkillNode) -> String:
 	return path
 
 
-func save_and_get_path_of_connection(connection: SkillNodeConnection) -> String:
-	if !connection:
+func save_and_get_path_of_uc(branch: SkillBranch) -> String:
+	if branch == null:
 		return ""
 
-	var save_path = "user://saved_skill_connections"
+	var save_path = "user://saved_skill_branches"
 	var dir = DirAccess.open("user://")
 
 	if not dir.dir_exists(save_path):
 		dir.make_dir(save_path)
 
-	var path = "user://saved_skill_connections/" + connection.name + ".tres"
-	if !ResourceLoader.exists(path):
+	var path = "user://saved_skill_branches/" + branch.name + ".tres"
+	if not ResourceLoader.exists(path):
 		# Save a new node's skill data
-		ResourceSaver.save(connection.unlock_condition, path)
+		ResourceSaver.save(branch.unlock_condition, path)
 	else:
 		# Delete and save the node's saves data, essentially
 		# overrides
 		DirAccess.remove_absolute(path)
-		ResourceSaver.save(connection.unlock_condition, path)
+		ResourceSaver.save(branch.unlock_condition, path)
 	return path
 
 
-func format_sub_nodes_of_connection(connection: SkillNodeConnection) -> Dictionary:
+func format_follow_points_of_branch(branch: SkillBranch) -> Dictionary:
 	var result: Dictionary
 
-	var order_entry: Array[String]
-
-	for sub_node in connection.arc_sub_nodes:
-		order_entry.append(sub_node.name)
+	for follow_point in branch.branch_follow_points:
 		var entry: Dictionary
-		entry.set("position", sub_node.position)
-		entry.set("arrow_visible", sub_node.arrow_visible)
-		result.set(sub_node.name, entry)
-
-	result.set("order", order_entry)
+		entry.set("position", follow_point.position)
+		entry.set("arrow_visible", follow_point.arrow_visible)
+		result.set(follow_point.name, entry)
 
 	return result
 
 
-func create_sub_nodes_for_skill_node_connection(connection: SkillNodeConnection, save_data_entry: Dictionary):
-	var sub_node_positions = save_data_entry["sub_node_positions"]
-	var order = sub_node_positions["order"]
+func recreate_nodes(node_saved_data: Dictionary, node_dict: Dictionary[String, SkillNode]):
+	for node_key in node_saved_data:
+		var entry = node_saved_data[node_key]
+		var node: SkillNode = spawner.create_node()
+		node_dict.set(node_key, node)
 
-	for sub_node_name in order:
-		var sub_node_entry = sub_node_positions.get(sub_node_name)
+		var skill_data: SkillData = load(entry["skill_data_path"])
+		node.skill_data = skill_data.duplicate(true)
 
-		var sub_node = spawner.create_sub_node(connection)
-		sub_node.position = SkillTreeFunctions.stringified_vector_to_v2(
-			sub_node_entry["position"],
-		)
-		sub_node.arrow_visible = sub_node_entry["arrow_visible"]
+		node.position = SkillTreeFunctions.stringified_vector_to_v2(entry["position"])
+		node.progression_tier = entry["progression_tier"]
+
+
+func recreate_branches(node_saved_data: Dictionary, node_dict: Dictionary[String, SkillNode], branch_dict: Dictionary[String, SkillBranch]):
+	for node_key in node_saved_data:
+		var entry = node_saved_data[node_key]
+		var prev_branches = entry.get("previous_branches")
+		for p_branch in prev_branches:
+			var branch_name = p_branch["branch_name"]
+			var branch: SkillBranch
+			var connected_node = p_branch["connected_node"]
+
+			if branch_name not in branch_dict:
+				branch = spawner.create_branch()
+				var unlock_condition = load(p_branch["unlock_condition_path"])
+				branch.unlock_condition = unlock_condition.duplicate(true)
+
+				if "follow_point_positions" in p_branch.keys():
+					recreate_follow_points_for_branch(branch, p_branch)
+			if branch_name in branch_dict:
+				branch = branch_dict[branch_name]
+
+			if p_branch["branch_mode"] == "start":
+				branch.start_node = node_dict[connected_node]
+			elif p_branch["branch_mode"] == "end":
+				branch.end_node = node_dict[connected_node]
+
+			branch_dict.set(branch_name, branch)
+
+	for node_key in node_saved_data:
+		var entry = node_saved_data[node_key]
+		var res_branches = entry.get("result_branches")
+		for r_branch in res_branches:
+			var branch_name = r_branch["branch_name"]
+			var branch: SkillBranch
+			var connected_node = r_branch["connected_node"]
+
+			if branch_name not in branch_dict:
+				branch = spawner.create_branch()
+				var unlock_condition = load(r_branch["unlock_condition_path"])
+				branch.unlock_condition = unlock_condition.duplicate(true)
+
+				if "follow_point_positions" in r_branch.keys():
+					recreate_follow_points_for_branch(branch, r_branch)
+			if branch_name in branch_dict:
+				branch = branch_dict[branch_name]
+
+			if r_branch["branch_mode"] == "start":
+				branch.start_node = node_dict[connected_node]
+			elif r_branch["branch_mode"] == "end":
+				branch.end_node = node_dict[connected_node]
+
+			branch_dict.set(branch_name, branch)
+
+
+func recreate_follow_points_for_branch(branch: SkillBranch, save_data_entry: Dictionary):
+	var follow_point_positions = save_data_entry["follow_point_positions"]
+
+	for follow_point_name in follow_point_positions:
+		var follow_point_entry = follow_point_positions.get(follow_point_name)
+
+		var follow_point: BranchFollowPoint = spawner.create_follow_point(branch)
+		follow_point.position = SkillTreeFunctions.stringified_vector_to_v2(follow_point_entry["position"])
+		follow_point.arrow_visible = follow_point_entry["arrow_visible"]
+
+
+func load_system_data(system_saved_data: Dictionary):
+	# Progression Tier Manager
+	var ptm_data: Dictionary = system_saved_data["progression_tier_manager"]
+	progression_tier_manager.use_progression_tiers = ptm_data["uses_tiers"]
+	progression_tier_manager.current_tier = int(ptm_data["current_tier"])
+
+	# Upgrade Cost Manager
+	var ucm_data: Dictionary = system_saved_data["upgrade_cost_manager"]
+	var upgrade_type = int(ucm_data["upgrade_type"])
+	upgrade_cost_manager.upgrade_type = SKT_UpgradeCostManager.UpgradeType[SKT_UpgradeCostManager.UpgradeType.find_key(upgrade_type)]
+	upgrade_cost_manager.current_sp = int(ucm_data["current_sp"])

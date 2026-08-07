@@ -1,5 +1,5 @@
 @tool
-class_name SKT_UpgradeCostHandler
+class_name SKT_UpgradeCostManager
 extends Node
 
 enum UpgradeType {
@@ -8,11 +8,16 @@ enum UpgradeType {
 }
 @export var upgrade_type: UpgradeType
 
-@export var current_sp: int = 30
+@export var current_sp: int = 30:
+	set(v):
+		if v < 0:
+			print("Cannot set current sp to a negative value.")
+			return
+		current_sp = v
 
 
 func can_afford_node(node: SkillNode) -> bool:
-	if !node.unlock_type:
+	if node.unlock_type == null:
 		return false
 	match upgrade_type:
 		UpgradeType.SP:

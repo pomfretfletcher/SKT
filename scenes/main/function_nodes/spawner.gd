@@ -2,25 +2,34 @@
 class_name SKT_Spawner
 extends Node
 
-var node_pscene: PackedScene = load("uid://2ud8xhsds1xu")
-var connection_pscene: PackedScene = load("uid://d70eulefynr3")
-var subnode_pscene: PackedScene = load("uid://cr4bfcpxf4ldb")
+var NODE_SCENE: PackedScene = load("uid://2ud8xhsds1xu")
+var BRANCH_SCENE: PackedScene = load("uid://d70eulefynr3")
+var FOLLOWPOINT_SCENE: PackedScene = load("uid://cr4bfcpxf4ldb")
 
+@export_subgroup("Inspector Node References")
+@export var nodes_parent: SKT_NodesParent
+@export var branches_parent: SKT_BranchesParent
+
+@export_subgroup("Tool Buttons")
 @export_tool_button("Create new Node")
 var but_newnode = create_node
+@export_tool_button("Create new Branch")
+var but_newbranch = create_branch
+@export_tool_button("Create new Node with Branch to it")
+var but_newnodeandbranch = create_node_with_branch_to_it
 
-@export_tool_button("Create new Connection")
-var but_newconnection = create_connection
 
-@export_tool_button("Create new Node with Connection to it")
-var but_newnodeandconnection = create_node_with_connection_to_it
-
-@export var nodes_parent: SKT_NodesParent
-@export var node_connections_parent: SKT_NodeConnectionsParent
+func _ready() -> void:
+	if not SkillTreeRequests.request_create_node.is_connected(create_node):
+		SkillTreeRequests.request_create_node.connect(create_node)
+	if not SkillTreeRequests.request_create_branch.is_connected(create_branch):
+		SkillTreeRequests.request_create_branch.connect(create_branch)
+	if not SkillTreeRequests.request_create_followpoint.is_connected(create_follow_point):
+		SkillTreeRequests.request_create_followpoint.connect(create_follow_point)
 
 
 func create_node() -> SkillNode:
-	var node = node_pscene.instantiate() as SkillNode
+	var node = NODE_SCENE.instantiate() as SkillNode
 	nodes_parent.add_child(node)
 	node.owner = get_tree().edited_scene_root
 
@@ -30,32 +39,32 @@ func create_node() -> SkillNode:
 	return node
 
 
-func create_connection() -> SkillNodeConnection:
-	var node_connection = connection_pscene.instantiate() as SkillNodeConnection
-	node_connections_parent.add_child(node_connection)
-	node_connection.owner = get_tree().edited_scene_root
+func create_branch() -> SkillBranch:
+	var branch = BRANCH_SCENE.instantiate() as SkillBranch
+	branches_parent.add_child(branch)
+	branch.owner = get_tree().edited_scene_root
 
-	# Formats connection name
-	node_connection.name = "SkillNodeConnection" + str(node_connections_parent.connection_count)
+	# Formats branch name
+	branch.name = "SkillBranch" + str(branches_parent.branch_count)
 
-	return node_connection
+	return branch
 
 
-func create_node_with_connection_to_it():
+func create_node_with_branch_to_it():
 	var node = create_node()
 
-	var connection_to_node = create_connection()
+	var branch = create_branch()
 
 	# Connect correct references for skill tree
-	connection_to_node.end_node = node
-	node.previous_connections.append(connection_to_node)
+	branch.end_node = node
+	node.previous_branches.append(branch)
 
 
-func create_sub_node(parent: SkillNodeConnection) -> ConnectionSubNode:
-	var sub_node = subnode_pscene.instantiate() as ConnectionSubNode
-	parent.add_child(sub_node)
-	sub_node.owner = get_tree().edited_scene_root
+func create_follow_point(parent: SkillBranch) -> BranchFollowPoint:
+	var follow_point = FOLLOWPOINT_SCENE.instantiate() as BranchFollowPoint
+	parent.add_child(follow_point)
+	follow_point.owner = get_tree().edited_scene_root
 
-	sub_node.name = "ConnectionSubNode"
+	follow_point.name = "BranchFollowPoint"
 
-	return sub_node
+	return follow_point

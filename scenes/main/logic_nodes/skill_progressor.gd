@@ -2,7 +2,8 @@
 class_name SKT_SkillProgressor
 extends Node
 
-@export var upgrade_cost_handler: SKT_UpgradeCostHandler
+@export_subgroup("Inspector Node References")
+@export var upgrade_cost_manager: SKT_UpgradeCostManager
 
 
 func _ready() -> void:
@@ -10,9 +11,9 @@ func _ready() -> void:
 
 
 func request_progress_skill(node: SkillNode):
-	if node.can_be_progressed and !node.is_completed():
+	if node.can_be_progressed and not node.is_completed():
 		var previous_state: bool = node.is_unlocked()
-		upgrade_cost_handler.purchase_unlock_cost(node.unlock_type._decide_single_upgrade_point_cost())
+		upgrade_cost_manager.purchase_unlock_cost(node.unlock_type._decide_single_upgrade_point_cost())
 		node.unlock_type._progress_skill()
 
 		# Emit event to signal skill has progressed

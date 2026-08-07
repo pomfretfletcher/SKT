@@ -10,7 +10,11 @@ var but_newnode = func():
 
 var node_count: int = 0:
 	get:
-		return get_child_count()
+		var result: int = 0
+		for child in get_children():
+			if child is SkillNode:
+				result += 1
+		return result
 	set(_v):
 		assert(false, "")
 

@@ -1,361 +1,267 @@
 [gd_scene format=3 uid="uid://b2f11wyd6ktkd"]
 
-[ext_resource type="Script" uid="uid://bc4l50iokd0yj" path="res://scenes/main/logic_nodes/layout_handler.gd" id="1_hujxm"]
-[ext_resource type="Script" uid="uid://cp4tbc5s4n01r" path="res://scenes/main/logic_nodes/tree_updator.gd" id="1_raeie"]
-[ext_resource type="Script" uid="uid://1g82k72wjre3" path="res://scenes/main/logic_nodes/tree_drawer.gd" id="2_necax"]
+[ext_resource type="Script" uid="uid://bc4l50iokd0yj" path="res://scenes/main/logic_nodes/branch_storage.gd" id="1_hujxm"]
+[ext_resource type="Script" uid="uid://cp4tbc5s4n01r" path="res://scenes/main/logic_nodes/signallers/tree_update_signaller.gd" id="1_raeie"]
+[ext_resource type="Script" uid="uid://1g82k72wjre3" path="res://scenes/main/logic_nodes/signallers/tree_draw_signaller.gd" id="2_necax"]
 [ext_resource type="Script" uid="uid://boulnnblpmnhn" path="res://scenes/main/function_nodes/tree_resetter.gd" id="2_s17dp"]
 [ext_resource type="Script" uid="uid://5h763uj07lx4" path="res://scenes/main/nodes.gd" id="3_b1x3f"]
-[ext_resource type="Script" uid="uid://bo2huy67wkqxv" path="res://scenes/main/logic_nodes/connection_unlocker.gd" id="4_blune"]
-[ext_resource type="Script" uid="uid://di5gn26keyqyy" path="res://scenes/main/logic_nodes/connection_positioner_specific.gd" id="4_ouso4"]
+[ext_resource type="Script" uid="uid://di5gn26keyqyy" path="res://scenes/main/display_nodes/branch_positioner_specific.gd" id="4_ouso4"]
 [ext_resource type="Script" uid="uid://h1wqttinaulb" path="res://scenes/main/function_nodes/spawner.gd" id="4_yyfjg"]
-[ext_resource type="Script" uid="uid://cao4xy0vsnqcj" path="res://scenes/main/node_connections.gd" id="5_hujxm"]
-[ext_resource type="Script" uid="uid://2ipl0k81cush" path="res://scenes/main/logic_nodes/node_formatter_specific.gd" id="5_p8abn"]
-[ext_resource type="Script" uid="uid://cyvadje8oj8nt" path="res://scenes/main/logic_nodes/connection_formatter_specific.gd" id="5_th5th"]
-[ext_resource type="PackedScene" uid="uid://2ud8xhsds1xu" path="res://scenes/tree_controls/skill_node.tscn" id="7_7smn1"]
-[ext_resource type="Script" uid="uid://dq8vlt6sfhyqi" path="res://scenes/main/logic_nodes/can_progress_checker.gd" id="7_necax"]
-[ext_resource type="Script" uid="uid://de2i4ovdfr63y" path="res://scenes/main/logic_nodes/can_regress_checker.gd" id="8_ou6is"]
+[ext_resource type="Script" uid="uid://cao4xy0vsnqcj" path="res://scenes/main/branches.gd" id="5_hujxm"]
+[ext_resource type="Script" uid="uid://2ipl0k81cush" path="res://scenes/main/display_nodes/node_formatter_specific.gd" id="5_p8abn"]
+[ext_resource type="Script" uid="uid://cyvadje8oj8nt" path="res://scenes/main/display_nodes/branch_formatter_specific.gd" id="5_th5th"]
+[ext_resource type="Script" uid="uid://dq8vlt6sfhyqi" path="res://scenes/main/logic_nodes/checkers/can_progress_checker.gd" id="7_necax"]
+[ext_resource type="Script" uid="uid://de2i4ovdfr63y" path="res://scenes/main/logic_nodes/checkers/can_regress_checker.gd" id="8_ou6is"]
 [ext_resource type="Script" uid="uid://ciejkvurtwutk" path="res://scenes/main/logic_nodes/upgrade_cost_handler.gd" id="10_62atk"]
 [ext_resource type="Script" uid="uid://dhb4u5muqo1jg" path="res://scenes/main/function_nodes/save_loader.gd" id="10_r4lks"]
 [ext_resource type="Script" uid="uid://cnbkckh2vymi7" path="res://scenes/main/logic_nodes/skill_regressor.gd" id="12_gkmcc"]
 [ext_resource type="Script" uid="uid://bd08nyy4syilo" path="res://scenes/main/logic_nodes/skill_progressor.gd" id="12_i7in8"]
-[ext_resource type="Script" uid="uid://ce847361rpxdp" path="res://scenes/main/logic_nodes/setup_signaller.gd" id="13_gkmcc"]
-[ext_resource type="Script" uid="uid://damuwhacrr1ro" path="res://scenes/tree_controls/skill_node_connection.gd" id="19_ii537"]
-[ext_resource type="PackedScene" uid="uid://d70eulefynr3" path="res://scenes/tree_controls/skill_node_connection.tscn" id="20_6llfj"]
+[ext_resource type="Script" uid="uid://ce847361rpxdp" path="res://scenes/main/logic_nodes/signallers/setup_signaller.gd" id="13_gkmcc"]
+[ext_resource type="Script" uid="uid://ovpt5ta7n7js" path="res://scenes/main/progression_tier_manager.gd" id="16_tbnf8"]
+[ext_resource type="Script" uid="uid://ctnnxm2o7xl2f" path="res://scenes/main/grid_node_locker.gd" id="17_os81g"]
+[ext_resource type="PackedScene" uid="uid://2ud8xhsds1xu" path="res://scenes/tree_controls/skill_node.tscn" id="20_gkmcc"]
 [ext_resource type="PackedScene" uid="uid://dohpaqjt3ityy" path="res://scenes/main/skill_display/skill_display.tscn" id="20_r4lks"]
-[ext_resource type="PackedScene" uid="uid://cr4bfcpxf4ldb" path="res://connection_sub_node.tscn" id="21_tbnf8"]
-[ext_resource type="Script" uid="uid://b4uav0iwy1v2g" path="res://data/unlock_conditions/full_unlock_uc.gd" id="22_62atk"]
-[ext_resource type="Script" uid="uid://dts75ixvhv5wt" path="res://connection_sub_node.gd" id="22_r1bmu"]
-[ext_resource type="Script" uid="uid://sglhomue6ugh" path="res://scenes/tree_controls/skill_node.gd" id="23_rofvo"]
-[ext_resource type="Texture2D" uid="uid://bih047rtoyshd" path="res://assets/Essence & Energy/tile000.png" id="24_ii537"]
-[ext_resource type="Script" uid="uid://cqgrxah6r3jfh" path="res://data/skill_data/skill_data.gd" id="25_rofvo"]
-[ext_resource type="Texture2D" uid="uid://55eujab6j8tq" path="res://assets/Essence & Energy/shader_small_star.png" id="26_tbnf8"]
-[ext_resource type="Script" uid="uid://bkooxndggq18d" path="res://data/unlock_types/single_level_ut.gd" id="27_r1bmu"]
-[ext_resource type="Texture2D" uid="uid://cq8cmty5fkgnh" path="res://assets/Essence & Energy/tile002.png" id="28_6w6mm"]
-[ext_resource type="Script" uid="uid://dfduuip8n75rq" path="res://data/unlock_types/multi_level_ut.gd" id="29_ii537"]
-[ext_resource type="Texture2D" uid="uid://c2hwmkoegj7h4" path="res://assets/Essence & Energy/tile001.png" id="30_1k3ck"]
-[ext_resource type="Texture2D" uid="uid://bph482xfsudjr" path="res://assets/Essence & Energy/tile007.png" id="31_62f45"]
+[ext_resource type="Script" uid="uid://sglhomue6ugh" path="res://scenes/tree_controls/skill_node.gd" id="21_7nlll"]
+[ext_resource type="Texture2D" uid="uid://bih047rtoyshd" path="res://assets/essence_n_energy/tile000.png" id="22_ii537"]
+[ext_resource type="Script" uid="uid://cqgrxah6r3jfh" path="res://data/skill_data/skill_data.gd" id="23_rofvo"]
+[ext_resource type="Texture2D" uid="uid://55eujab6j8tq" path="res://assets/essence_n_energy/shader_small_star.png" id="24_tbnf8"]
+[ext_resource type="Script" uid="uid://dfduuip8n75rq" path="res://data/unlock_types/multi_level_ut.gd" id="25_r1bmu"]
+[ext_resource type="Texture2D" uid="uid://cq8cmty5fkgnh" path="res://assets/essence_n_energy/tile002.png" id="26_6w6mm"]
+[ext_resource type="Texture2D" uid="uid://c2hwmkoegj7h4" path="res://assets/essence_n_energy/tile001.png" id="27_os81g"]
+[ext_resource type="Texture2D" uid="uid://bph482xfsudjr" path="res://assets/essence_n_energy/tile007.png" id="28_1k3ck"]
+[ext_resource type="Script" uid="uid://bkooxndggq18d" path="res://data/unlock_types/single_level_ut.gd" id="29_62f45"]
 
-[sub_resource type="Resource" id="Resource_tbnf8"]
-resource_local_to_scene = true
-script = ExtResource("22_62atk")
+[sub_resource type="Resource" id="Resource_6g32y"]
+script = ExtResource("25_r1bmu")
+max_level = 3
+point_cost_per_level = Array[int]([0, 0, 0])
+metadata/_custom_type_script = "uid://dfduuip8n75rq"
 
-[sub_resource type="Resource" id="Resource_r1bmu"]
-resource_local_to_scene = true
-script = ExtResource("22_62atk")
-
-[sub_resource type="Resource" id="Resource_6w6mm"]
-resource_local_to_scene = true
-script = ExtResource("22_62atk")
-
-[sub_resource type="Resource" id="Resource_os81g"]
-script = ExtResource("27_r1bmu")
-unlock_status = true
-point_cost = 1
-metadata/_custom_type_script = "uid://bkooxndggq18d"
-
-[sub_resource type="Resource" id="Resource_1k3ck"]
-script = ExtResource("25_rofvo")
+[sub_resource type="Resource" id="Resource_5nwjq"]
+script = ExtResource("23_rofvo")
 name = "A"
-unlock_type = SubResource("Resource_os81g")
+unlock_type = SubResource("Resource_6g32y")
 description = "Hello"
-icon = ExtResource("24_ii537")
-shader_icon = ExtResource("26_tbnf8")
+icon = ExtResource("22_ii537")
+shader_icon = ExtResource("24_tbnf8")
 metadata/_custom_type_script = "uid://cqgrxah6r3jfh"
 
-[sub_resource type="Resource" id="Resource_62f45"]
-script = ExtResource("29_ii537")
+[sub_resource type="Resource" id="Resource_g2upo"]
+script = ExtResource("25_r1bmu")
 max_level = 2
-current_level = 2
 point_cost_per_level = Array[int]([1, 3])
 metadata/_custom_type_script = "uid://dfduuip8n75rq"
 
-[sub_resource type="Resource" id="Resource_6g32y"]
-script = ExtResource("25_rofvo")
+[sub_resource type="Resource" id="Resource_38d3o"]
+script = ExtResource("23_rofvo")
 name = "B"
-unlock_type = SubResource("Resource_62f45")
-icon = ExtResource("28_6w6mm")
-shader_icon = ExtResource("26_tbnf8")
+unlock_type = SubResource("Resource_g2upo")
+icon = ExtResource("26_6w6mm")
+shader_icon = ExtResource("24_tbnf8")
 metadata/_custom_type_script = "uid://cqgrxah6r3jfh"
 
-[sub_resource type="Resource" id="Resource_5nwjq"]
-script = ExtResource("29_ii537")
+[sub_resource type="Resource" id="Resource_i6fjx"]
+script = ExtResource("25_r1bmu")
 max_level = 4
-current_level = 4
 point_cost_per_level = Array[int]([2, 2, 4, 5])
 metadata/_custom_type_script = "uid://dfduuip8n75rq"
 
-[sub_resource type="Resource" id="Resource_g2upo"]
+[sub_resource type="Resource" id="Resource_7dg2i"]
 resource_local_to_scene = true
-script = ExtResource("25_rofvo")
+script = ExtResource("23_rofvo")
 name = "C"
-unlock_type = SubResource("Resource_5nwjq")
-icon = ExtResource("30_1k3ck")
-shader_icon = ExtResource("26_tbnf8")
+unlock_type = SubResource("Resource_i6fjx")
+icon = ExtResource("27_os81g")
+shader_icon = ExtResource("24_tbnf8")
 
-[sub_resource type="Resource" id="Resource_38d3o"]
-script = ExtResource("27_r1bmu")
-unlock_status = true
+[sub_resource type="Resource" id="Resource_08tbl"]
+script = ExtResource("29_62f45")
 point_cost = 3
 metadata/_custom_type_script = "uid://bkooxndggq18d"
 
-[sub_resource type="Resource" id="Resource_i6fjx"]
-script = ExtResource("25_rofvo")
+[sub_resource type="Resource" id="Resource_f4j1x"]
+script = ExtResource("23_rofvo")
 name = "D"
-unlock_type = SubResource("Resource_38d3o")
-icon = ExtResource("31_62f45")
-shader_icon = ExtResource("26_tbnf8")
+unlock_type = SubResource("Resource_08tbl")
+icon = ExtResource("28_1k3ck")
+shader_icon = ExtResource("24_tbnf8")
 metadata/_custom_type_script = "uid://cqgrxah6r3jfh"
 
-[sub_resource type="Resource" id="Resource_7dg2i"]
+[sub_resource type="Resource" id="Resource_wcrab"]
 resource_local_to_scene = true
-script = ExtResource("27_r1bmu")
+script = ExtResource("29_62f45")
 metadata/_custom_type_script = "uid://bkooxndggq18d"
 
-[sub_resource type="Resource" id="Resource_08tbl"]
+[sub_resource type="Resource" id="Resource_gohbf"]
 resource_local_to_scene = true
-script = ExtResource("25_rofvo")
+script = ExtResource("23_rofvo")
 name = "E"
-unlock_type = SubResource("Resource_7dg2i")
+unlock_type = SubResource("Resource_wcrab")
 
 [node name="Main" type="Node" unique_id=197318533]
 
-[node name="LogicNodes" type="Node" parent="." unique_id=808557590]
+[node name="Backend" type="Node" parent="." unique_id=2115853463]
 
-[node name="TreeUpdator" type="Node" parent="LogicNodes" unique_id=1140819954]
+[node name="LogicNodes" type="Node" parent="Backend" unique_id=808557590]
+
+[node name="Signallers" type="Node" parent="Backend/LogicNodes" unique_id=1226947947]
+
+[node name="TreeUpdateSignaller" type="Node" parent="Backend/LogicNodes/Signallers" unique_id=1140819954]
 script = ExtResource("1_raeie")
+_can_update = false
 
-[node name="TreeDrawer" type="Node" parent="LogicNodes" unique_id=137309458]
+[node name="TreeDrawSignaller" type="Node" parent="Backend/LogicNodes/Signallers" unique_id=137309458]
 script = ExtResource("2_necax")
+_can_draw = false
 
-[node name="LayoutHandler" type="Node" parent="LogicNodes" unique_id=1381681976 node_paths=PackedStringArray("connection_positioner", "node_formatter", "nodes_parent", "node_connections_parent")]
-script = ExtResource("1_hujxm")
-connection_positioner = NodePath("../../DisplayNodes/ConnectionPositioner[Specific]")
-node_formatter = NodePath("../../DisplayNodes/NodeFormatter[Specific]")
-nodes_parent = NodePath("../../Nodes")
-node_connections_parent = NodePath("../../NodeConnections")
-
-[node name="ConnectionUnlocker" type="Node" parent="LogicNodes" unique_id=1431496122 node_paths=PackedStringArray("connection_formatter", "can_progress_checker", "can_regress_checker", "nodes_parent")]
-script = ExtResource("4_blune")
-connection_formatter = NodePath("../../DisplayNodes/ConnectionFormatter[Specific]")
-can_progress_checker = NodePath("CanProgressChecker")
-can_regress_checker = NodePath("CanRegressChecker")
-nodes_parent = NodePath("../../Nodes")
-
-[node name="CanProgressChecker" type="Node" parent="LogicNodes/ConnectionUnlocker" unique_id=1877385060 node_paths=PackedStringArray("upgrade_cost_handler")]
-script = ExtResource("7_necax")
-upgrade_cost_handler = NodePath("../../UpgradeCostHandler")
-
-[node name="CanRegressChecker" type="Node" parent="LogicNodes/ConnectionUnlocker" unique_id=1543290528]
-script = ExtResource("8_ou6is")
-
-[node name="UpgradeCostHandler" type="Node" parent="LogicNodes" unique_id=121578001]
-script = ExtResource("10_62atk")
-upgrade_type = 1
-current_sp = 136
-
-[node name="SkillProgressor" type="Node" parent="LogicNodes" unique_id=235456436 node_paths=PackedStringArray("upgrade_cost_handler")]
-script = ExtResource("12_i7in8")
-upgrade_cost_handler = NodePath("../UpgradeCostHandler")
-
-[node name="SkillRegressor" type="Node" parent="LogicNodes" unique_id=594550144 node_paths=PackedStringArray("upgrade_cost_handler")]
-script = ExtResource("12_gkmcc")
-upgrade_cost_handler = NodePath("../UpgradeCostHandler")
-
-[node name="SetupSignaller" type="Node" parent="LogicNodes" unique_id=2136143581]
+[node name="SetupSignaller" type="Node" parent="Backend/LogicNodes/Signallers" unique_id=2136143581]
 script = ExtResource("13_gkmcc")
 
-[node name="DisplayNodes" type="Node" parent="." unique_id=1621006293]
+[node name="Checkers" type="Node" parent="Backend/LogicNodes" unique_id=1669573428]
 
-[node name="ConnectionPositioner[Specific]" type="Node" parent="DisplayNodes" unique_id=1884917214]
+[node name="CanProgressChecker" type="Node" parent="Backend/LogicNodes/Checkers" unique_id=1877385060 node_paths=PackedStringArray("progression_tier_manager", "upgrade_cost_manager", "nodes_parent")]
+script = ExtResource("7_necax")
+progression_tier_manager = NodePath("../../../../Frontend/ProgressionTierManager")
+upgrade_cost_manager = NodePath("../../../../Frontend/UpgradeCostManager")
+nodes_parent = NodePath("../../../../Nodes")
+
+[node name="CanRegressChecker" type="Node" parent="Backend/LogicNodes/Checkers" unique_id=1543290528 node_paths=PackedStringArray("nodes_parent")]
+script = ExtResource("8_ou6is")
+nodes_parent = NodePath("../../../../Nodes")
+
+[node name="BranchStorage" type="Node" parent="Backend/LogicNodes" unique_id=1381681976 node_paths=PackedStringArray("nodes_parent", "branches_parent")]
+script = ExtResource("1_hujxm")
+nodes_parent = NodePath("../../../Nodes")
+branches_parent = NodePath("../../../Branches")
+
+[node name="SkillProgressor" type="Node" parent="Backend/LogicNodes" unique_id=235456436 node_paths=PackedStringArray("upgrade_cost_manager")]
+script = ExtResource("12_i7in8")
+upgrade_cost_manager = NodePath("../../../Frontend/UpgradeCostManager")
+
+[node name="SkillRegressor" type="Node" parent="Backend/LogicNodes" unique_id=594550144 node_paths=PackedStringArray("upgrade_cost_manager")]
+script = ExtResource("12_gkmcc")
+upgrade_cost_manager = NodePath("../../../Frontend/UpgradeCostManager")
+
+[node name="DisplayNodes" type="Node" parent="Backend" unique_id=1621006293]
+
+[node name="BranchPositioner[Specific]" type="Node" parent="Backend/DisplayNodes" unique_id=1884917214 node_paths=PackedStringArray("branches_parent")]
 script = ExtResource("4_ouso4")
+branches_parent = NodePath("../../../Branches")
 
-[node name="NodeFormatter[Specific]" type="Node" parent="DisplayNodes" unique_id=1925427688]
+[node name="NodeFormatter[Specific]" type="Node" parent="Backend/DisplayNodes" unique_id=1925427688 node_paths=PackedStringArray("nodes_parent")]
 script = ExtResource("5_p8abn")
+nodes_parent = NodePath("../../../Nodes")
 
-[node name="ConnectionFormatter[Specific]" type="Node" parent="DisplayNodes" unique_id=348121967]
+[node name="BranchFormatter[Specific]" type="Node" parent="Backend/DisplayNodes" unique_id=348121967 node_paths=PackedStringArray("branches_parent")]
 script = ExtResource("5_th5th")
+branches_parent = NodePath("../../../Branches")
 
-[node name="FunctionNodes" type="Node" parent="." unique_id=558274320]
+[node name="Frontend" type="Node" parent="." unique_id=558274320]
 
-[node name="Spawner" type="Node" parent="FunctionNodes" unique_id=1732001445 node_paths=PackedStringArray("nodes_parent", "node_connections_parent")]
+[node name="Spawner" type="Node" parent="Frontend" unique_id=1732001445 node_paths=PackedStringArray("nodes_parent", "branches_parent")]
 script = ExtResource("4_yyfjg")
 nodes_parent = NodePath("../../Nodes")
-node_connections_parent = NodePath("../../NodeConnections")
+branches_parent = NodePath("../../Branches")
 
-[node name="TreeResetter" type="Node" parent="FunctionNodes" unique_id=1933022791 node_paths=PackedStringArray("nodes_parent")]
+[node name="TreeResetter" type="Node" parent="Frontend" unique_id=1933022791 node_paths=PackedStringArray("nodes_parent")]
 script = ExtResource("2_s17dp")
 nodes_parent = NodePath("../../Nodes")
 
-[node name="SaveLoader" type="Node" parent="FunctionNodes" unique_id=903098706 node_paths=PackedStringArray("spawner", "nodes_parent", "node_connections_parent")]
+[node name="SaveLoader" type="Node" parent="Frontend" unique_id=903098706 node_paths=PackedStringArray("spawner", "nodes_parent", "branches_parent", "progression_tier_manager", "upgrade_cost_manager")]
 script = ExtResource("10_r4lks")
 spawner = NodePath("../Spawner")
 nodes_parent = NodePath("../../Nodes")
-node_connections_parent = NodePath("../../NodeConnections")
+branches_parent = NodePath("../../Branches")
+progression_tier_manager = NodePath("../ProgressionTierManager")
+upgrade_cost_manager = NodePath("../UpgradeCostManager")
 
-[node name="NodeConnections" type="Control" parent="." unique_id=1082722058 node_paths=PackedStringArray("spawner")]
-unique_name_in_owner = true
+[node name="ProgressionTierManager" type="Node" parent="Frontend" unique_id=1693871688 node_paths=PackedStringArray("nodes_parent")]
+script = ExtResource("16_tbnf8")
+use_progression_tiers = true
+tiers = Array[Array]([Array[NodePath]([NodePath("Tier 0"), NodePath("/root/@EditorNode@19513/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Main/Nodes/ASkillNode"), NodePath("/root/@EditorNode@19513/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Main/Nodes/BSkillNode"), NodePath("/root/@EditorNode@19513/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Main/Nodes/CSkillNode"), NodePath("/root/@EditorNode@19513/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Main/Nodes/DSkillNode")]), Array[NodePath]([NodePath("Tier 1"), NodePath("/root/@EditorNode@19513/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Main/Nodes/ESkillNode")])])
+current_tier = 3
+nodes_parent = NodePath("../../Nodes")
+
+[node name="UpgradeCostManager" type="Node" parent="Frontend" unique_id=121578001]
+script = ExtResource("10_62atk")
+upgrade_type = 1
+current_sp = 137
+
+[node name="GridNodeLocker" type="Node" parent="Frontend" unique_id=1551547060 node_paths=PackedStringArray("nodes_parent", "branches_parent")]
+script = ExtResource("17_os81g")
+grid_cell_size = 50
+nodes_parent = NodePath("../../Nodes")
+branches_parent = NodePath("../../Branches")
+
+[node name="Branches" type="Control" parent="." unique_id=1082722058 node_paths=PackedStringArray("spawner")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("5_hujxm")
-spawner = NodePath("../FunctionNodes/Spawner")
+spawner = NodePath("../Frontend/Spawner")
 metadata/_custom_type_script = "uid://cao4xy0vsnqcj"
 
-[node name="SkillNodeConnection1" type="Control" parent="NodeConnections" unique_id=704870078 node_paths=PackedStringArray("start_node", "end_node", "node_arc", "shader_arc", "arrow", "shader_arrow") instance=ExtResource("20_6llfj")]
-z_index = -1
-anchors_preset = 0
-offset_left = 301.0
-offset_top = 313.0
-offset_right = 412.0
-offset_bottom = 323.0
-rotation = -1.240499
-pivot_offset_ratio = Vector2(0, 0.5)
-script = ExtResource("19_ii537")
-start_node = NodePath("../../Nodes/ASkillNode")
-end_node = NodePath("../../Nodes/BSkillNode")
-unlock_condition = SubResource("Resource_tbnf8")
-node_arc = NodePath("NodeArc")
-shader_arc = NodePath("NodeArc/ShaderArc")
-arrow = NodePath("Arrow")
-shader_arrow = NodePath("Arrow/ShaderArrow")
-
-[node name="ConnectionSubNode" type="Control" parent="NodeConnections/SkillNodeConnection1" unique_id=1476286960 node_paths=PackedStringArray("node_arc", "shader_arc", "arrow", "shader_arrow") instance=ExtResource("21_tbnf8")]
-top_level = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 337.0
-offset_top = 213.0
-offset_right = -815.0
-offset_bottom = -435.0
-grow_horizontal = 2
-grow_vertical = 2
-rotation = 0.8248514
-pivot_offset_ratio = Vector2(0, 0.5)
-script = ExtResource("22_r1bmu")
-node_arc = NodePath("NodeArc")
-shader_arc = NodePath("NodeArc/ShaderArc")
-arrow = NodePath("Arrow")
-shader_arrow = NodePath("Arrow/ShaderArrow")
-
-[node name="ConnectionSubNode2" type="Control" parent="NodeConnections/SkillNodeConnection1" unique_id=1862565025 node_paths=PackedStringArray("node_arc", "shader_arc", "arrow", "shader_arrow") instance=ExtResource("21_tbnf8")]
-top_level = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 410.0
-offset_top = 292.0
-offset_right = -742.0
-offset_bottom = -356.0
-grow_horizontal = 2
-grow_vertical = 2
-rotation = -0.8385396
-pivot_offset_ratio = Vector2(0, 0.5)
-script = ExtResource("22_r1bmu")
-node_arc = NodePath("NodeArc")
-shader_arc = NodePath("NodeArc/ShaderArc")
-arrow = NodePath("Arrow")
-shader_arrow = NodePath("Arrow/ShaderArrow")
-
-[node name="SkillNodeConnection2" type="Control" parent="NodeConnections" unique_id=2133585631 node_paths=PackedStringArray("start_node", "end_node", "node_arc", "shader_arc", "arrow", "shader_arrow") instance=ExtResource("20_6llfj")]
-z_index = -1
-anchors_preset = 0
-offset_left = 499.0
-offset_top = 188.0
-offset_right = 619.91736
-offset_bottom = 198.0
-rotation = 0.77955025
-pivot_offset_ratio = Vector2(0, 0.5)
-script = ExtResource("19_ii537")
-start_node = NodePath("../../Nodes/BSkillNode")
-end_node = NodePath("../../Nodes/CSkillNode")
-unlock_condition = SubResource("Resource_r1bmu")
-node_arc = NodePath("NodeArc")
-shader_arc = NodePath("NodeArc/ShaderArc")
-arrow = NodePath("Arrow")
-shader_arrow = NodePath("Arrow/ShaderArrow")
-
-[node name="SkillNodeConnection3" type="Control" parent="NodeConnections" unique_id=1187649156 node_paths=PackedStringArray("start_node", "end_node", "node_arc", "shader_arc", "arrow", "shader_arrow") instance=ExtResource("20_6llfj")]
-z_index = -1
-anchors_preset = 0
-offset_left = 585.0
-offset_top = 273.0
-offset_right = 678.52
-offset_bottom = 283.0
-rotation = 2.7114253
-pivot_offset_ratio = Vector2(0, 0.5)
-script = ExtResource("19_ii537")
-start_node = NodePath("../../Nodes/CSkillNode")
-end_node = NodePath("../../Nodes/DSkillNode")
-unlock_condition = SubResource("Resource_6w6mm")
-node_arc = NodePath("NodeArc")
-shader_arc = NodePath("NodeArc/ShaderArc")
-arrow = NodePath("Arrow")
-shader_arrow = NodePath("Arrow/ShaderArrow")
-
 [node name="Nodes" type="Control" parent="." unique_id=776948668 node_paths=PackedStringArray("spawner")]
-unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("3_b1x3f")
-spawner = NodePath("../FunctionNodes/Spawner")
+spawner = NodePath("../Frontend/Spawner")
 metadata/_custom_type_script = "uid://5h763uj07lx4"
 
-[node name="ASkillNode" type="Control" parent="Nodes" unique_id=1253674025 node_paths=PackedStringArray("orb", "shader_orb") instance=ExtResource("7_7smn1")]
+[node name="ASkillNode" type="Control" parent="Nodes" unique_id=1253674025 node_paths=PackedStringArray("orb", "shader_orb") instance=ExtResource("20_gkmcc")]
 anchors_preset = 0
-offset_left = 289.0
-offset_top = 306.0
-offset_right = 313.0
-offset_bottom = 330.0
-script = ExtResource("23_rofvo")
-skill_data = SubResource("Resource_1k3ck")
+offset_left = 250.0
+offset_top = 250.0
+offset_right = 274.0
+offset_bottom = 274.0
+script = ExtResource("21_7nlll")
+skill_data = SubResource("Resource_5nwjq")
 orb = NodePath("NodeOrb")
 shader_orb = NodePath("NodeOrb/ShaderOrb")
 
-[node name="BSkillNode" type="Control" parent="Nodes" unique_id=934752186 node_paths=PackedStringArray("orb", "shader_orb") instance=ExtResource("7_7smn1")]
+[node name="BSkillNode" type="Control" parent="Nodes" unique_id=1599315366 node_paths=PackedStringArray("orb", "shader_orb") instance=ExtResource("20_gkmcc")]
 anchors_preset = 0
-offset_left = 487.0
-offset_top = 181.0
-offset_right = 511.0
-offset_bottom = 205.0
-script = ExtResource("23_rofvo")
-skill_data = SubResource("Resource_6g32y")
+offset_left = 450.0
+offset_top = 150.0
+offset_right = 474.0
+offset_bottom = 174.0
+script = ExtResource("21_7nlll")
+skill_data = SubResource("Resource_38d3o")
 orb = NodePath("NodeOrb")
 shader_orb = NodePath("NodeOrb/ShaderOrb")
 
-[node name="CSkillNode" type="Control" parent="Nodes" unique_id=1661879072 node_paths=PackedStringArray("orb", "shader_orb") instance=ExtResource("7_7smn1")]
+[node name="CSkillNode" type="Control" parent="Nodes" unique_id=1416490088 node_paths=PackedStringArray("orb", "shader_orb") instance=ExtResource("20_gkmcc")]
 anchors_preset = 0
-offset_left = 573.0
-offset_top = 266.0
-offset_right = 597.0
-offset_bottom = 290.0
-script = ExtResource("23_rofvo")
-skill_data = SubResource("Resource_g2upo")
+offset_left = 550.0
+offset_top = 250.0
+offset_right = 574.0
+offset_bottom = 274.0
+script = ExtResource("21_7nlll")
+skill_data = SubResource("Resource_7dg2i")
 orb = NodePath("NodeOrb")
 shader_orb = NodePath("NodeOrb/ShaderOrb")
 
-[node name="DSkillNode" type="Control" parent="Nodes" unique_id=676029373 node_paths=PackedStringArray("orb", "shader_orb") instance=ExtResource("7_7smn1")]
+[node name="DSkillNode" type="Control" parent="Nodes" unique_id=1904303999 node_paths=PackedStringArray("orb", "shader_orb") instance=ExtResource("20_gkmcc")]
 anchors_preset = 0
-offset_left = 488.0
-offset_top = 305.0
-offset_right = 512.0
-offset_bottom = 329.0
-script = ExtResource("23_rofvo")
-skill_data = SubResource("Resource_i6fjx")
+offset_left = 468.0
+offset_top = 317.0
+offset_right = 492.0
+offset_bottom = 341.0
+script = ExtResource("21_7nlll")
+skill_data = SubResource("Resource_f4j1x")
 orb = NodePath("NodeOrb")
 shader_orb = NodePath("NodeOrb/ShaderOrb")
 
-[node name="ESkillNode" type="Control" parent="Nodes" unique_id=1680823046 node_paths=PackedStringArray("orb", "shader_orb") instance=ExtResource("7_7smn1")]
+[node name="ESkillNode" type="Control" parent="Nodes" unique_id=1380895340 node_paths=PackedStringArray("orb", "shader_orb") instance=ExtResource("20_gkmcc")]
 anchors_preset = 0
 offset_right = 24.0
 offset_bottom = 24.0
-script = ExtResource("23_rofvo")
-skill_data = SubResource("Resource_08tbl")
+script = ExtResource("21_7nlll")
+skill_data = SubResource("Resource_gohbf")
+progression_tier = 1
 orb = NodePath("NodeOrb")
 shader_orb = NodePath("NodeOrb/ShaderOrb")
 

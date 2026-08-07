@@ -3,16 +3,17 @@
 class_name UnlockType
 extends Resource
 
+var POINT_COST_PROPERTY_NAME: String
+
 var attached_node: SkillNode
 
-var override_checks := false
-var setup := false
+var _setup := false
 
 
 func _init() -> void:
 	SkillTreeEvents.tree_setup.connect(
 		func():
-			setup = true
+			_setup = true
 	)
 
 

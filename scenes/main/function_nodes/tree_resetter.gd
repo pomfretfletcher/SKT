@@ -2,11 +2,14 @@
 class_name SKT_TreeResetter
 extends Node
 
+@export var refund_upgrade_costs := true
+
+@export_subgroup("Inspector Node References")
+@export var nodes_parent: SKT_NodesParent
+
+@export_subgroup("Tool Buttons")
 @export_tool_button("Reset Tree")
 var but_resettree = reset_tree
-
-@export var nodes_parent: SKT_NodesParent
-@export var refund_upgrade_costs := true
 
 
 func _ready() -> void:

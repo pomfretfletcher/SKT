@@ -10,6 +10,7 @@ extends Node
 ## functions may be expensive as it is only called a few times each second. Built in
 ## processes called by this signal include checking whether nodes and connections are
 ## unlocked, locked, unlockable etc.
+## TODO:FIX
 @warning_ignore("unused_signal")
 signal update_tree
 
@@ -23,6 +24,7 @@ signal update_tree
 ## (This should instead be handled by the update_tree signal). Built in processes called
 ## by this signal include positioning arcs between nodes and skill node image orbs
 ## correctly for viewing the skill tree.
+## TODO: FIX
 @warning_ignore("unused_signal")
 signal draw_tree
 
@@ -34,18 +36,6 @@ signal draw_tree
 ## display panel.
 @warning_ignore("unused_signal")
 signal skill_selected(node: SkillNode)
-
-## Event that will cause the TreeUpdator node to toggle whether it is updating the
-## skill tree. Mainly used by the SkillTreePauser plugin to pause tree processing
-## when in any screen other than 2D to prevent logic issues when editing tool scripts.
-@warning_ignore("unused_signal")
-signal toggle_updating(active: bool)
-
-## Event that will cause the TreeUpdator node to toggle whether it is updating the
-## skill tree. Mainly used by the SkillTreePauser plugin to pause tree processing
-## when in any screen other than 2D to prevent logic issues when editing tool scripts.
-@warning_ignore("unused_signal")
-signal toggle_drawing(active: bool)
 
 @warning_ignore("unused_signal")
 signal tree_setup
