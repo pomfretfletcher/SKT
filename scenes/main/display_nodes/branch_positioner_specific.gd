@@ -1,17 +1,13 @@
 @tool
 extends SKT_BranchPositioner
 
-@export_subgroup("Inspector Node References")
-@export var branches_parent: SKT_BranchesParent
-
-
 func _ready() -> void:
 	if not SkillTreeEvents.draw_tree.is_connected(position_branches):
 		SkillTreeEvents.draw_tree.connect(position_branches)
 
 
 func position_branches():
-	for branch: SkillBranch in branches_parent.get_branches():
+	for branch: SkillBranch in SKT.branches_parent.get_branches():
 		position_branch(branch)
 
 

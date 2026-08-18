@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://db4m0adacukvp"]
+
+[ext_resource type="Script" uid="uid://cnhbla0xllr0a" path="res://addons/skt_screen_plugin/skt_button.gd" id="1_vvthv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4a6qg"]
+font_size = 14
+
+[node name="SKT_Button" type="Panel" unique_id=892809283 node_paths=PackedStringArray("label")]
+custom_minimum_size = Vector2(100, 50)
+offset_right = 100.0
+offset_bottom = 50.0
+script = ExtResource("1_vvthv")
+label_text = "Default Text"
+label = NodePath("Label")
+
+[node name="Label" type="Label" parent="." unique_id=614427175]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Default Text"
+label_settings = SubResource("LabelSettings_4a6qg")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

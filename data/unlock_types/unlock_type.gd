@@ -3,7 +3,7 @@
 class_name UnlockType
 extends Resource
 
-var POINT_COST_PROPERTY_NAME: String
+var UPGRADE_COST_PROPERTY_NAME: String
 
 var attached_node: SkillNode
 
@@ -15,6 +15,7 @@ func _init() -> void:
 		func():
 			_setup = true
 	)
+	_store_upgrade_cost_property_name()
 
 
 @abstract
@@ -43,3 +44,15 @@ func _decide_single_upgrade_point_cost() -> int
 
 @abstract
 func _decide_full_upgrade_point_cost() -> int
+
+
+@abstract
+func _store_upgrade_cost_property_name()
+
+
+func _validate_property(property: Dictionary) -> void:
+	if not _setup:
+		return
+	if property.name == UPGRADE_COST_PROPERTY_NAME:
+		if not SkillTreeChecks.should_show_upgrade_costs():
+			property.usage = PROPERTY_USAGE_NO_EDITOR

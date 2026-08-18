@@ -1,9 +1,14 @@
 Node
-Label
-MarginContainer
-TextureRect
 Panel
+TextureRect
 PanelContainer
+VBoxContainer
+SKT_Button
+HBoxContainer
+MarginContainer
+Label
+TextEdit
+Button
 TabContainer
 Control
 ColorRect

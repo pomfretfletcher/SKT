@@ -5,18 +5,20 @@ extends Node
 ## system is not in use, it expects that node to set the property usage to not be shown in the
 ## editor.
 func should_show_progression_tiers() -> bool:
-	# Get the ProgressionTierManager node
-	var s: Script = SKT_ProgressionTierManager.new().get_script()
-	var progression_tier_manager: SKT_ProgressionTierManager = GDFunctions.GetChildOfType(
-		get_tree().current_scene if not Engine.is_editor_hint() else get_tree().edited_scene_root,
-		s.get_global_name(),
-	)
-
-	# If Manager not found, assert error
-	assert(progression_tier_manager != null)
-
+	if SKT.tree == null:
+		return false
 	# Returns whether exported data should be shown
-	return progression_tier_manager.use_progression_tiers
+	return SKT.progression_tier_manager.use_progression_tiers
+
+
+## Used by any node that has exported data that refers to the upgrade cost system. If said
+## system is not in use, it expects that node to set the property usage to not be shown in the
+## editor.
+func should_show_upgrade_costs() -> bool:
+	if SKT.tree == null:
+		return false
+	# Returns whether exported data should be shown
+	return SKT.upgrade_cost_manager.upgrade_type != SKT_UpgradeCostManager.UpgradeType.NONE
 
 
 ## For use by skill data resources owned by skill nodes. Allows storing validity checking
@@ -34,10 +36,17 @@ func should_show_progression_tiers() -> bool:
 ## conditions reliant on it, such as not being able to have a single level skill when a branch
 ## resulting from that skill requires a threshold level to be active.
 func is_new_unlock_type_valid(ut: UnlockType, node: SkillNode) -> ValidityStatement:
+	#region Null Value Checks
+	if node == null:
+		return ValidityStatement.new(false, "Given node parameter is null.")
+	elif ut == null:
+		return ValidityStatement.new(false, "Given UT parameter is null.")
+	#endregion
+
 	#region Default SKT Checks
 	# If a resulting branch needs this node to be a levelling skill, cannot change it to a 
 	# single level type
-	if ut is SingleLevel_UT and node:
+	if ut is SingleLevel_UT and node != null:
 		for branch in node.result_branches:
 			if branch.unlock_condition is ThresholdLevel_UC:
 				return ValidityStatement.new(false, "Cannot change to a single level unlock type as a branch from this node needs a threshold level.")
@@ -49,7 +58,7 @@ func is_new_unlock_type_valid(ut: UnlockType, node: SkillNode) -> ValidityStatem
 	"""
 	#endregion
 
-	# If passed all checks, unlock type is a valid choice
+	# If passed all checks, new UT is valid
 	return ValidityStatement.new(true)
 
 
@@ -72,8 +81,12 @@ func is_new_unlock_condition_valid(uc: UnlockCondition, branch: SkillBranch) -> 
 	var start_node: SkillNode = branch.start_node
 	var end_node: SkillNode = branch.end_node
 
-	if start_node == null or end_node == null:
-		return
+	#region Null Value Checks
+	if start_node == null:
+		return ValidityStatement.new(false, "Branch's start node is null. Branch:" + str(branch))
+	elif end_node == null:
+		return ValidityStatement.new(false, "Branch's end node is null. Branch:" + str(branch))
+	#endregion
 
 	#region Default SKT Checks
 	# If the start node of the branch is not a levelling skill, cannot choose threshold level
@@ -85,15 +98,15 @@ func is_new_unlock_condition_valid(uc: UnlockCondition, branch: SkillBranch) -> 
 	# that would cause the branch's unlock condition to no longer be reached
 	if uc is ThresholdLevel_UC and end_node and end_node.is_unlocked():
 		uc = uc as ThresholdLevel_UC
-		if start_node:
+		if start_node != null:
 			var start_node_lvl = start_node.unlock_type.get("current_level")
 			if uc.threshold_level > start_node_lvl:
 				return ValidityStatement.new(false, "Cannot choose threshold level unlock condition as start node is not levelled up enough and it would cause invalidity with result skills.")
 
 	# If the node at the end of the branch is unlocked, cannot change to a new unlock condition 
 	# that would cause the branch's unlock condition to no longer be reached
-	if uc is FullUnlock_UC and end_node and end_node.is_unlocked():
-		if start_node and not start_node.is_completed():
+	if uc is FullUnlock_UC and end_node != null and end_node.is_unlocked():
+		if start_node != null and not start_node.is_completed():
 			return ValidityStatement.new(false, "Cannot choose full unlock condition as start node is not fully unlocked and it would cause invalidity with result skills.")
 	#endregion
 	#region Custom Checks
@@ -103,7 +116,7 @@ func is_new_unlock_condition_valid(uc: UnlockCondition, branch: SkillBranch) -> 
 	"""
 	#endregion
 
-	# If passed all checks, unlock condition is a valid choice
+	# If passed all checks, new UC is valid
 	return ValidityStatement.new(true)
 
 
@@ -122,8 +135,12 @@ func is_new_threshold_level_valid(new_v: int, uc: ThresholdLevel_UC) -> Validity
 	var branch: SkillBranch = uc.attached_branch
 	var old_v: int = uc.threshold_level
 
-	if branch == null or branch.start_node == null:
-		return
+	#region Null Value Checks
+	if branch == null:
+		return ValidityStatement.new(false, "UC's attached branch is null. Thr UC:" + str(uc))
+	elif branch.start_node == null:
+		return ValidityStatement.new(false, "UC's attached branch's start node is null. UC:" + str(uc))
+	#endregion
 
 	#region Default SKT Checks
 	if branch.start_node.unlock_type.get("max_level"):
@@ -134,14 +151,14 @@ func is_new_threshold_level_valid(new_v: int, uc: ThresholdLevel_UC) -> Validity
 	# Checks whether changing threshold level would cause end node of branch to be invalid (where
 	# it should not be able to be unlocked, but is)
 	if uc.is_condition_reached(branch) and branch.end_node.is_unlocked():
-		uc.changing_threshold_level_for_test = true
+		uc._changing_threshold_level_for_test = true
 		uc.threshold_level = new_v
 		if not uc.is_condition_reached(branch):
 			uc.threshold_level = old_v
-			uc.changing_threshold_level_for_test = false
+			uc._changing_threshold_level_for_test = false
 			return ValidityStatement.new(false, "Cannot change threshold level as would cause invalidity for end node on branch.")
 		uc.threshold_level = old_v
-		uc.changing_threshold_level_for_test = false
+		uc._changing_threshold_level_for_test = false
 	#endregion
 	#region Custom Checks
 	""" 
@@ -168,8 +185,10 @@ func is_new_threshold_level_valid(new_v: int, uc: ThresholdLevel_UC) -> Validity
 func is_new_max_level_valid(new_v: int, ut: MultiLevel_UT) -> ValidityStatement:
 	var node: SkillNode = ut.attached_node
 
+	#region Null Value Checks
 	if node == null:
-		return
+		return ValidityStatement.new(false, "UT's attached node is null. UT:" + str(ut))
+	#endregion
 
 	#region Default SKT Checks
 	for branch in node.result_branches:
@@ -210,7 +229,7 @@ func is_new_max_level_valid(new_v: int, ut: MultiLevel_UT) -> ValidityStatement:
 	"""
 	#endregion
 
-	# If passed all checks, theshold level is valid
+	# If passed all checks, new UT is valid
 	return ValidityStatement.new(true)
 
 
@@ -230,8 +249,10 @@ func is_new_current_level_valid(new_v: int, ut: MultiLevel_UT) -> ValidityStatem
 	var cur_v: int = ut.current_level
 	var node: SkillNode = ut.attached_node
 
+	#region Null Value Checks
 	if node == null:
-		return
+		return ValidityStatement.new(false, "UT's attached node is null. UT:" + str(ut))
+	#endregion
 
 	#region Default SKT Checks
 	if new_v > max_level:
@@ -251,5 +272,5 @@ func is_new_current_level_valid(new_v: int, ut: MultiLevel_UT) -> ValidityStatem
 	"""
 	#endregion
 
-	# If passed all checks, theshold level is valid
+	# If passed all checks, new UT is valid
 	return ValidityStatement.new(true)

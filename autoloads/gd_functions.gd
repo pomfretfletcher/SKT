@@ -10,7 +10,7 @@ static func GetChildOfType(node: Node, type: StringName) -> Node:
 	AccessAllChildrenRecursive(node, node_list)
 	for n in node_list:
 		var s: Script = n.get_script()
-		if s:
+		if s != null:
 			var global_name = s.get_global_name()
 			if global_name == type:
 				return n

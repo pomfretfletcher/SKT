@@ -28,15 +28,6 @@ signal update_tree
 @warning_ignore("unused_signal")
 signal draw_tree
 
-## Event that will trigger whenever a skill node is selected by the operator. Currently
-## only used in editor by selecting nodes within the 2D screen or scene tree. This uses
-## the SkillSelector plugin.
-## [br][br]
-## Main uses include displaying the selected skill's information within the side 
-## display panel.
-@warning_ignore("unused_signal")
-signal skill_selected(node: SkillNode)
-
 @warning_ignore("unused_signal")
 signal tree_setup
 

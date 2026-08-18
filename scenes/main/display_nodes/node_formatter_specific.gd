@@ -1,10 +1,6 @@
 @tool
 extends SKT_NodeFormatter
 
-@export_subgroup("Inspector Node References")
-@export var nodes_parent: SKT_NodesParent
-
-
 func _ready() -> void:
 	if not SkillTreeEvents.draw_tree.is_connected(display_node):
 		SkillTreeEvents.draw_tree.connect(display_node)
@@ -13,7 +9,7 @@ func _ready() -> void:
 
 
 func display_node():
-	for node: SkillNode in nodes_parent.get_nodes():
+	for node: SkillNode in SKT.nodes_parent.get_nodes():
 		if node.skill_data.icon == null:
 			return
 
@@ -22,7 +18,7 @@ func display_node():
 
 
 func format_visuals_of_nodes():
-	for node: SkillNode in nodes_parent.get_nodes():
+	for node: SkillNode in SKT.nodes_parent.get_nodes():
 		if not node.is_unlocked():
 			set_locked(node)
 		else:
@@ -43,7 +39,7 @@ func set_locked(node: SkillNode):
 func set_unlocked(node: SkillNode):
 	node.shader_orb.modulate = Color(0, 0, 0, 0)
 	for branch in node.result_branches:
-		if branch.start_node == null or branch.end_node == null:
+		if branch.start_node == null or branch.end_node == null or branch.unlock_condition == null:
 			continue
 
 		if branch.unlock_condition.is_condition_reached(branch):

@@ -1,18 +1,19 @@
 @tool
+@icon("res://addons/at-icons/control/node_graph_root.svg")
 class_name SkillNode
-extends Control
+extends SkillTreeControl
 
 @export var skill_data: SkillData:
 	set(v):
 		skill_data = v
-		if skill_data:
+		if skill_data != null:
 			skill_data.attached_node = self
 
 @export_range(0, 100) var progression_tier: int:
 	set(v):
 		for branch in result_branches:
 			if branch.end_node.progression_tier < v:
-				print("Cannot change progression tier as the tier for this skill must be less than or equal to the tier for any resulting skills.")
+				SkillTreeRequests.request_log_issue.emit("Cannot change progression tier as the tier for this skill must be less than or equal to the tier for any resulting skills.")
 				return
 		progression_tier = v
 
@@ -23,8 +24,10 @@ extends Control
 var previous_branches: Array[SkillBranch]
 var result_branches: Array[SkillBranch]
 
-var can_be_progressed: bool = false
-var can_be_regressed: bool = true
+var can_be_progressed := false
+var can_be_regressed := true
+
+var silence_signals := false
 
 # Allows a form of abstraction by not needing to call
 # xxx_node.skill_data.unlock_type
@@ -32,6 +35,7 @@ var can_be_regressed: bool = true
 # Instead just use xxx_node.unlock_type
 var unlock_type: UnlockType:
 	set(v):
+		skill_data.attached_node = self
 		skill_data.unlock_type = v
 	get:
 		return skill_data.unlock_type
@@ -41,10 +45,13 @@ var ready_has_occured := false
 
 func _ready() -> void:
 	set_notify_transform(true)
-	skill_data.attached_node = self
 	ready_has_occured = true
 	if not SkillTreeEvents.update_tree.is_connected(update_name):
 		SkillTreeEvents.update_tree.connect(update_name)
+	TreeInteractionSignals.node_selected.connect(
+		func(node: SkillNode):
+			can_be_moved_in_inspector = (node == self)
+	)
 
 
 func update_name():
@@ -65,7 +72,16 @@ func is_completed() -> bool:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		SkillTreeEvents.skill_selected.emit(self)
+		TreeInteractionSignals.node_selected.emit(self)
+
+
+var can_be_moved_in_inspector := false
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSFORM_CHANGED:
+		if not silence_signals and can_be_moved_in_inspector:
+			TreeInteractionSignals.node_moved.emit(self)
 
 #region - Warnings and Inspector Display Methods -
 func _enter_tree() -> void:
@@ -79,7 +95,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 		warnings.append("Skill Node is not connected to any other skill node.")
 	if skill_data == null:
 		warnings.append("Skill Node must have a skill data resource.")
-	if skill_data and skill_data.unlock_type == null:
+	if skill_data != null and skill_data.unlock_type == null:
 		warnings.append("Skill data must have an unlock type chosen.")
 
 	return warnings

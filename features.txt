@@ -26,3 +26,10 @@ Interaction with SKT Software without custom implementation:
 			upgraded)
 		Assigning data to hold in SkillNodes
 		
+
+Text Formats
+"if node != null:" [instead of "if node:"]
+"if node == null:" [instead of "if !node"]
+"if not _setup" [instead of "if !_setup", do this for states of a process for example]
+"if !xxx:" is never used in SKT Code
+"_setup or _updating" for boolean states

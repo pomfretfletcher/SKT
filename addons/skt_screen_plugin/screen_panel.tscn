@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://b5ji5dg3uh8yk"]
+
+[ext_resource type="Script" uid="uid://c2gb2bivewukl" path="res://addons/skt_screen_plugin/skt_screen_panel.gd" id="1_c3she"]
+[ext_resource type="PackedScene" uid="uid://db4m0adacukvp" path="res://addons/skt_screen_plugin/skt_button.tscn" id="2_uunx3"]
+[ext_resource type="Script" uid="uid://dom8m53oi25b6" path="res://addons/skt_screen_plugin/button[create_branch].gd" id="3_bmarl"]
+[ext_resource type="Script" uid="uid://cg4np8uloj1ub" path="res://addons/skt_screen_plugin/button[create_node].gd" id="3_ufgcw"]
+[ext_resource type="Script" uid="uid://dwrnbxg58qq60" path="res://addons/skt_screen_plugin/button[create_follow_point].gd" id="4_1oj0n"]
+[ext_resource type="Script" uid="uid://dnfgwosq348cs" path="res://addons/skt_screen_plugin/button[change_skill_data].gd" id="4_8pxhp"]
+[ext_resource type="Script" uid="uid://wgg5if8xilmy" path="res://addons/skt_screen_plugin/button[refresh_skt].gd" id="4_ufgcw"]
+[ext_resource type="Script" uid="uid://ckhjxpmr6w0g4" path="res://addons/skt_screen_plugin/button[save_tree_data].gd" id="6_0220b"]
+[ext_resource type="Script" uid="uid://dvxuciksuilui" path="res://addons/skt_screen_plugin/button[load_savedata].gd" id="6_rvwvp"]
+
+[node name="ScreenPanel" type="Control" unique_id=1209832212]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_c3she")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=963681359]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=875116028]
+layout_mode = 2
+
+[node name="Toolbar" type="HBoxContainer" parent="VBoxContainer/PanelContainer" unique_id=664101520]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Button[CreateNode]" parent="VBoxContainer/PanelContainer/Toolbar" unique_id=892809283 instance=ExtResource("2_uunx3")]
+modulate = Color(0.5, 0.5, 0.5, 0.5)
+layout_mode = 2
+script = ExtResource("3_ufgcw")
+label_text = "Create Node"
+
+[node name="Button[CreateBranch]" parent="VBoxContainer/PanelContainer/Toolbar" unique_id=1817824589 instance=ExtResource("2_uunx3")]
+modulate = Color(0.5, 0.5, 0.5, 0.5)
+layout_mode = 2
+script = ExtResource("3_bmarl")
+label_text = "Create Branch"
+
+[node name="Button[ChangeSkillData]" parent="VBoxContainer/PanelContainer/Toolbar" unique_id=551070886 instance=ExtResource("2_uunx3")]
+modulate = Color(0.5, 0.5, 0.5, 0.5)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+script = ExtResource("4_8pxhp")
+label_text = "Change Skill Data"
+
+[node name="Button[CreateFollowPoint]" parent="VBoxContainer/PanelContainer/Toolbar" unique_id=327252015 instance=ExtResource("2_uunx3")]
+modulate = Color(0.5, 0.5, 0.5, 0.5)
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+script = ExtResource("4_1oj0n")
+label_text = "Create Branch Follow Point"
+
+[node name="Button[SaveTreeData]" parent="VBoxContainer/PanelContainer/Toolbar" unique_id=420468069 instance=ExtResource("2_uunx3")]
+layout_mode = 2
+script = ExtResource("6_0220b")
+label_text = "Save Tree Data"
+
+[node name="Button[LoadSavedata]" parent="VBoxContainer/PanelContainer/Toolbar" unique_id=1636579677 node_paths=PackedStringArray("panel") instance=ExtResource("2_uunx3")]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+script = ExtResource("6_rvwvp")
+panel = NodePath("../../../..")
+label_text = "Load Savedata"
+
+[node name="Button[RefreshSKT]" parent="VBoxContainer/PanelContainer/Toolbar" unique_id=773443566 instance=ExtResource("2_uunx3")]
+layout_mode = 2
+script = ExtResource("4_ufgcw")
+label_text = "Refresh SKT"
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer" unique_id=1932070429]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="VBoxContainer/PanelContainer2" unique_id=276422954]
+layout_mode = 2
+
+[node name="Tree" type="Node" parent="." unique_id=838289751]

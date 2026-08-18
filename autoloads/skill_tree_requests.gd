@@ -74,3 +74,9 @@ signal request_prepare_for_save
 
 @warning_ignore("unused_signal")
 signal request_prepare_for_load
+
+@warning_ignore("unused_signal")
+signal request_log_issue(string: String)
+
+@warning_ignore("unused_signal")
+signal request_log_process(string: String)

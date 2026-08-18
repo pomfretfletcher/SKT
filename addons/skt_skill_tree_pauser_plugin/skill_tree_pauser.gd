@@ -2,8 +2,7 @@
 extends EditorPlugin
 
 func _ready() -> void:
-	if not Engine.is_editor_hint():
-		_on_main_screen_changed("2D")
+	_on_main_screen_changed("2D")
 
 
 func _enter_tree():

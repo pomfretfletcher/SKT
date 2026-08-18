@@ -17,7 +17,7 @@ var cur_skill: SkillNode
 
 
 func _ready() -> void:
-	SkillTreeEvents.skill_selected.connect(
+	TreeInteractionSignals.node_selected.connect(
 		func(node: SkillNode):
 			cur_skill = node
 	)
@@ -41,7 +41,7 @@ func _ready() -> void:
 				unlock_tick_box.texture = fully_unlocked_tick_box_texture
 
 			var progress_text: String = cur_skill_data.unlock_type._get_progress_text()
-			if progress_text:
+			if progress_text != "":
 				progress_label.text = progress_text
 			else:
 				progress_label.text = ""

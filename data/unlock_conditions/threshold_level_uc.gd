@@ -2,20 +2,20 @@
 class_name ThresholdLevel_UC
 extends UnlockCondition
 
-var changing_threshold_level_for_test: bool = false
+var _changing_threshold_level_for_test := false
 @export var threshold_level: int:
 	set(v):
-		if changing_threshold_level_for_test:
+		if _changing_threshold_level_for_test or not _setup:
 			threshold_level = v
 			return
 
 		var result: ValidityStatement = SkillTreeChecks.is_new_threshold_level_valid(v, self)
 		if result == null:
 			return
-		elif result.validity:
+		elif result.validity == true:
 			threshold_level = v
 		else:
-			print(result.reason)
+			SkillTreeRequests.request_log_issue.emit(result.reason)
 
 
 func is_condition_reached(branch: SkillBranch) -> bool:

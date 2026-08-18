@@ -1,0 +1,348 @@
+[gd_scene format=3 uid="uid://b2f11wyd6ktkd"]
+
+[ext_resource type="Script" uid="uid://dipcb2brefb6h" path="res://scenes/main/skt_main.gd" id="1_1dcbn"]
+[ext_resource type="Script" uid="uid://cp4tbc5s4n01r" path="res://scenes/main/backend/signallers/tree_update_signaller.gd" id="2_a8244"]
+[ext_resource type="Script" uid="uid://bnncr2gjqhu7a" path="res://scenes/main/signallers.gd" id="2_tf65j"]
+[ext_resource type="Script" uid="uid://1g82k72wjre3" path="res://scenes/main/backend/signallers/tree_draw_signaller.gd" id="3_tf65j"]
+[ext_resource type="Script" uid="uid://ce847361rpxdp" path="res://scenes/main/backend/signallers/setup_signaller.gd" id="4_bursi"]
+[ext_resource type="Script" uid="uid://dq8vlt6sfhyqi" path="res://scenes/main/backend/checkers/can_progress_checker.gd" id="5_biano"]
+[ext_resource type="Script" uid="uid://de2i4ovdfr63y" path="res://scenes/main/backend/checkers/can_regress_checker.gd" id="6_356p5"]
+[ext_resource type="Script" uid="uid://bob8jmk1s1utb" path="res://scenes/main/checkers.gd" id="6_tf65j"]
+[ext_resource type="Script" uid="uid://bd08nyy4syilo" path="res://scenes/main/backend/skill_progressor.gd" id="7_rj33c"]
+[ext_resource type="Script" uid="uid://cnbkckh2vymi7" path="res://scenes/main/backend/skill_regressor.gd" id="8_rvftq"]
+[ext_resource type="Script" uid="uid://hta4241w5687" path="res://scenes/main/backend/message_logger.gd" id="9_m7fxi"]
+[ext_resource type="Script" uid="uid://di5gn26keyqyy" path="res://scenes/main/display_nodes/branch_positioner_specific.gd" id="10_o5mtg"]
+[ext_resource type="Script" uid="uid://2ipl0k81cush" path="res://scenes/main/display_nodes/node_formatter_specific.gd" id="11_eu0ph"]
+[ext_resource type="Script" uid="uid://cyvadje8oj8nt" path="res://scenes/main/display_nodes/branch_formatter_specific.gd" id="12_4eo2d"]
+[ext_resource type="Script" uid="uid://h1wqttinaulb" path="res://scenes/main/frontend/spawner.gd" id="13_uyq52"]
+[ext_resource type="Script" uid="uid://boulnnblpmnhn" path="res://scenes/main/frontend/tree_resetter.gd" id="14_5fi33"]
+[ext_resource type="Script" uid="uid://dhb4u5muqo1jg" path="res://scenes/main/frontend/save_loader.gd" id="15_qbjbx"]
+[ext_resource type="Script" uid="uid://ovpt5ta7n7js" path="res://scenes/main/frontend/progression_tier_manager.gd" id="16_awalf"]
+[ext_resource type="Script" uid="uid://ciejkvurtwutk" path="res://scenes/main/frontend/upgrade_cost_manager.gd" id="17_1htl4"]
+[ext_resource type="Script" uid="uid://ctnnxm2o7xl2f" path="res://scenes/main/frontend/grid_node_locker.gd" id="18_lnlav"]
+[ext_resource type="Script" uid="uid://cao4xy0vsnqcj" path="res://scenes/main/parents/branches.gd" id="19_1fa41"]
+[ext_resource type="PackedScene" uid="uid://d70eulefynr3" path="res://scenes/tree_controls/skill_branch.tscn" id="20_v8it1"]
+[ext_resource type="Script" uid="uid://co2pcfs8600g5" path="res://data/unlock_conditions/single_unlock_uc.gd" id="22_ps8y8"]
+[ext_resource type="Script" uid="uid://d2vr84d3t0qtl" path="res://data/unlock_conditions/threshold_level_uc.gd" id="23_4iw82"]
+[ext_resource type="Script" uid="uid://b4uav0iwy1v2g" path="res://data/unlock_conditions/full_unlock_uc.gd" id="24_oe1me"]
+[ext_resource type="Script" uid="uid://5h763uj07lx4" path="res://scenes/main/parents/nodes.gd" id="25_ylbdv"]
+[ext_resource type="PackedScene" uid="uid://2ud8xhsds1xu" path="res://scenes/tree_controls/skill_node.tscn" id="26_0c6ej"]
+[ext_resource type="Texture2D" uid="uid://bih047rtoyshd" path="res://assets/essence_n_energy/tile000.png" id="28_q0o0p"]
+[ext_resource type="Script" uid="uid://cqgrxah6r3jfh" path="res://data/skill_data/skill_data.gd" id="29_4yga3"]
+[ext_resource type="Texture2D" uid="uid://55eujab6j8tq" path="res://assets/essence_n_energy/shader_small_star.png" id="30_otdcy"]
+[ext_resource type="Script" uid="uid://dfduuip8n75rq" path="res://data/unlock_types/multi_level_ut.gd" id="31_xj815"]
+[ext_resource type="Texture2D" uid="uid://cq8cmty5fkgnh" path="res://assets/essence_n_energy/tile002.png" id="32_73c8n"]
+[ext_resource type="Texture2D" uid="uid://c2hwmkoegj7h4" path="res://assets/essence_n_energy/tile001.png" id="33_6o1pb"]
+[ext_resource type="Texture2D" uid="uid://bph482xfsudjr" path="res://assets/essence_n_energy/tile007.png" id="34_krtpo"]
+[ext_resource type="Script" uid="uid://bkooxndggq18d" path="res://data/unlock_types/single_level_ut.gd" id="35_1ls6e"]
+[ext_resource type="PackedScene" uid="uid://dohpaqjt3ityy" path="res://scenes/main/skill_display/skill_display.tscn" id="36_xp6rj"]
+
+[sub_resource type="Resource" id="Resource_tf65j"]
+script = ExtResource("22_ps8y8")
+metadata/_custom_type_script = "uid://co2pcfs8600g5"
+
+[sub_resource type="Resource" id="Resource_bursi"]
+script = ExtResource("22_ps8y8")
+metadata/_custom_type_script = "uid://co2pcfs8600g5"
+
+[sub_resource type="Resource" id="Resource_biano"]
+script = ExtResource("23_4iw82")
+threshold_level = 2
+metadata/_custom_type_script = "uid://d2vr84d3t0qtl"
+
+[sub_resource type="Resource" id="Resource_356p5"]
+script = ExtResource("24_oe1me")
+metadata/_custom_type_script = "uid://b4uav0iwy1v2g"
+
+[sub_resource type="Resource" id="Resource_rj33c"]
+script = ExtResource("22_ps8y8")
+metadata/_custom_type_script = "uid://co2pcfs8600g5"
+
+[sub_resource type="Resource" id="Resource_rvftq"]
+script = ExtResource("31_xj815")
+max_level = 3
+current_level = 1
+point_cost_per_level = Array[int]([3, 0, 0])
+metadata/_custom_type_script = "uid://dfduuip8n75rq"
+
+[sub_resource type="Resource" id="Resource_m7fxi"]
+script = ExtResource("29_4yga3")
+name = "A"
+unlock_type = SubResource("Resource_rvftq")
+description = "Hello"
+icon = ExtResource("28_q0o0p")
+shader_icon = ExtResource("30_otdcy")
+metadata/_custom_type_script = "uid://cqgrxah6r3jfh"
+
+[sub_resource type="Resource" id="Resource_o5mtg"]
+script = ExtResource("31_xj815")
+max_level = 3
+current_level = 1
+point_cost_per_level = Array[int]([1, 3, 0])
+metadata/_custom_type_script = "uid://dfduuip8n75rq"
+
+[sub_resource type="Resource" id="Resource_eu0ph"]
+script = ExtResource("29_4yga3")
+name = "B"
+unlock_type = SubResource("Resource_o5mtg")
+icon = ExtResource("32_73c8n")
+shader_icon = ExtResource("30_otdcy")
+metadata/_custom_type_script = "uid://cqgrxah6r3jfh"
+
+[sub_resource type="Resource" id="Resource_4eo2d"]
+script = ExtResource("31_xj815")
+max_level = 4
+point_cost_per_level = Array[int]([2, 2, 4, 5])
+metadata/_custom_type_script = "uid://dfduuip8n75rq"
+
+[sub_resource type="Resource" id="Resource_uyq52"]
+resource_local_to_scene = true
+script = ExtResource("29_4yga3")
+name = "C"
+unlock_type = SubResource("Resource_4eo2d")
+icon = ExtResource("33_6o1pb")
+shader_icon = ExtResource("30_otdcy")
+
+[sub_resource type="Resource" id="Resource_5fi33"]
+script = ExtResource("35_1ls6e")
+point_cost = 3
+metadata/_custom_type_script = "uid://bkooxndggq18d"
+
+[sub_resource type="Resource" id="Resource_qbjbx"]
+script = ExtResource("29_4yga3")
+name = "D"
+unlock_type = SubResource("Resource_5fi33")
+icon = ExtResource("34_krtpo")
+shader_icon = ExtResource("30_otdcy")
+metadata/_custom_type_script = "uid://cqgrxah6r3jfh"
+
+[sub_resource type="Resource" id="Resource_awalf"]
+resource_local_to_scene = true
+script = ExtResource("35_1ls6e")
+point_cost = 5
+metadata/_custom_type_script = "uid://bkooxndggq18d"
+
+[sub_resource type="Resource" id="Resource_1htl4"]
+resource_local_to_scene = true
+script = ExtResource("29_4yga3")
+name = "E"
+unlock_type = SubResource("Resource_awalf")
+
+[node name="SKT_Main" type="Node" unique_id=197318533 node_paths=PackedStringArray("_tree_update_signaller", "_tree_draw_signaller", "_spawner", "_progression_tier_manager", "_upgrade_cost_manager", "_grid_node_locker", "_nodes_parent", "_branches_parent")]
+script = ExtResource("1_1dcbn")
+_tree_update_signaller = NodePath("Backend/Signallers/TreeUpdateSignaller")
+_tree_draw_signaller = NodePath("Backend/Signallers/TreeDrawSignaller")
+_spawner = NodePath("Frontend/Spawner")
+_progression_tier_manager = NodePath("Frontend/ProgressionTierManager")
+_upgrade_cost_manager = NodePath("Frontend/UpgradeCostManager")
+_grid_node_locker = NodePath("Frontend/GridNodeLocker")
+_nodes_parent = NodePath("Parents/Nodes")
+_branches_parent = NodePath("Parents/Branches")
+
+[node name="Backend" type="Node" parent="." unique_id=2115853463]
+
+[node name="Signallers" type="Node" parent="Backend" unique_id=1226947947]
+script = ExtResource("2_tf65j")
+
+[node name="TreeUpdateSignaller" type="Node" parent="Backend/Signallers" unique_id=1140819954]
+script = ExtResource("2_a8244")
+_can_update = false
+
+[node name="TreeDrawSignaller" type="Node" parent="Backend/Signallers" unique_id=137309458]
+script = ExtResource("3_tf65j")
+_can_draw = false
+
+[node name="SetupSignaller" type="Node" parent="Backend/Signallers" unique_id=2136143581]
+script = ExtResource("4_bursi")
+
+[node name="Checkers" type="Node" parent="Backend" unique_id=1669573428]
+script = ExtResource("6_tf65j")
+
+[node name="CanProgressChecker" type="Node" parent="Backend/Checkers" unique_id=1877385060]
+script = ExtResource("5_biano")
+
+[node name="CanRegressChecker" type="Node" parent="Backend/Checkers" unique_id=1543290528]
+script = ExtResource("6_356p5")
+
+[node name="SkillProgressor" type="Node" parent="Backend" unique_id=235456436]
+script = ExtResource("7_rj33c")
+
+[node name="SkillRegressor" type="Node" parent="Backend" unique_id=594550144]
+script = ExtResource("8_rvftq")
+
+[node name="MessageLogger" type="Node" parent="Backend" unique_id=24393215]
+script = ExtResource("9_m7fxi")
+
+[node name="DisplayNodes" type="Node" parent="." unique_id=1621006293]
+
+[node name="BranchPositioner[Specific]" type="Node" parent="DisplayNodes" unique_id=1884917214]
+script = ExtResource("10_o5mtg")
+
+[node name="NodeFormatter[Specific]" type="Node" parent="DisplayNodes" unique_id=1925427688]
+script = ExtResource("11_eu0ph")
+
+[node name="BranchFormatter[Specific]" type="Node" parent="DisplayNodes" unique_id=348121967]
+script = ExtResource("12_4eo2d")
+
+[node name="Frontend" type="Node" parent="." unique_id=558274320]
+
+[node name="Spawner" type="Node" parent="Frontend" unique_id=1732001445]
+script = ExtResource("13_uyq52")
+
+[node name="TreeResetter" type="Node" parent="Frontend" unique_id=1933022791]
+script = ExtResource("14_5fi33")
+
+[node name="SaveLoader" type="Node" parent="Frontend" unique_id=903098706]
+script = ExtResource("15_qbjbx")
+
+[node name="ProgressionTierManager" type="Node" parent="Frontend" unique_id=1693871688]
+script = ExtResource("16_awalf")
+use_progression_tiers = true
+current_tier = 3
+
+[node name="UpgradeCostManager" type="Node" parent="Frontend" unique_id=121578001]
+script = ExtResource("17_1htl4")
+upgrade_type = 1
+current_sp = 113
+
+[node name="GridNodeLocker" type="Node" parent="Frontend" unique_id=1551547060]
+script = ExtResource("18_lnlav")
+grid_cell_size = 20
+
+[node name="Parents" type="Node" parent="." unique_id=1478742707]
+
+[node name="Branches" type="Control" parent="Parents" unique_id=1082722058]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("19_1fa41")
+metadata/_custom_type_script = "uid://cao4xy0vsnqcj"
+
+[node name="SkillBranch1" parent="Parents/Branches" unique_id=704870078 node_paths=PackedStringArray("start_node", "end_node") instance=ExtResource("20_v8it1")]
+layout_mode = 0
+offset_left = 262.0
+offset_top = 257.0
+offset_right = 478.06018
+offset_bottom = 267.0
+rotation = -0.486418
+pivot_offset_ratio = Vector2(0, 0.5)
+start_node = NodePath("../../Nodes/ASkillNode")
+end_node = NodePath("../../Nodes/BSkillNode")
+unlock_condition = SubResource("Resource_tf65j")
+
+[node name="SkillBranch2" parent="Parents/Branches" unique_id=438423906 node_paths=PackedStringArray("start_node", "end_node") instance=ExtResource("20_v8it1")]
+layout_mode = 0
+offset_left = 453.0
+offset_top = 156.0
+offset_right = 601.6001
+offset_bottom = 166.0
+rotation = 0.74732137
+pivot_offset_ratio = Vector2(0, 0.5)
+start_node = NodePath("../../Nodes/BSkillNode")
+end_node = NodePath("../../Nodes/CSkillNode")
+unlock_condition = SubResource("Resource_bursi")
+
+[node name="SkillBranch3" parent="Parents/Branches" unique_id=628951934 node_paths=PackedStringArray("start_node", "end_node") instance=ExtResource("20_v8it1")]
+layout_mode = 0
+offset_left = 453.0
+offset_top = 156.0
+offset_right = 604.26794
+offset_bottom = 166.0
+rotation = 1.5112641
+pivot_offset_ratio = Vector2(0, 0.5)
+start_node = NodePath("../../Nodes/BSkillNode")
+end_node = NodePath("../../Nodes/DSkillNode")
+unlock_condition = SubResource("Resource_biano")
+
+[node name="SkillBranch4" parent="Parents/Branches" unique_id=134029612 node_paths=PackedStringArray("start_node", "end_node") instance=ExtResource("20_v8it1")]
+layout_mode = 0
+offset_left = 562.0
+offset_top = 257.0
+offset_right = 673.8034
+offset_bottom = 267.0
+rotation = 2.6779451
+pivot_offset_ratio = Vector2(0, 0.5)
+start_node = NodePath("../../Nodes/CSkillNode")
+end_node = NodePath("../../Nodes/DSkillNode")
+unlock_condition = SubResource("Resource_356p5")
+
+[node name="SkillBranch5" parent="Parents/Branches" unique_id=938000168 node_paths=PackedStringArray("start_node", "end_node") instance=ExtResource("20_v8it1")]
+layout_mode = 0
+offset_left = 462.0
+offset_top = 307.0
+offset_right = 609.86816
+offset_bottom = 317.0
+rotation = -3.033176
+pivot_offset_ratio = Vector2(0, 0.5)
+start_node = NodePath("../../Nodes/DSkillNode")
+end_node = NodePath("../../Nodes/ESkillNode")
+unlock_condition = SubResource("Resource_rj33c")
+
+[node name="Nodes" type="Control" parent="Parents" unique_id=776948668]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("25_ylbdv")
+metadata/_custom_type_script = "uid://5h763uj07lx4"
+
+[node name="ASkillNode" parent="Parents/Nodes" unique_id=1253674025 instance=ExtResource("26_0c6ej")]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 250.0
+offset_right = 274.0
+offset_bottom = 274.0
+skill_data = SubResource("Resource_m7fxi")
+
+[node name="BSkillNode" parent="Parents/Nodes" unique_id=289142860 instance=ExtResource("26_0c6ej")]
+layout_mode = 0
+offset_left = 441.0
+offset_top = 149.0
+offset_right = 465.0
+offset_bottom = 173.0
+skill_data = SubResource("Resource_eu0ph")
+
+[node name="CSkillNode" parent="Parents/Nodes" unique_id=1323235282 instance=ExtResource("26_0c6ej")]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 250.0
+offset_right = 574.0
+offset_bottom = 274.0
+skill_data = SubResource("Resource_uyq52")
+
+[node name="DSkillNode" parent="Parents/Nodes" unique_id=116484476 instance=ExtResource("26_0c6ej")]
+layout_mode = 0
+offset_left = 450.0
+offset_top = 300.0
+offset_right = 474.0
+offset_bottom = 324.0
+skill_data = SubResource("Resource_qbjbx")
+
+[node name="ESkillNode" parent="Parents/Nodes" unique_id=828990078 instance=ExtResource("26_0c6ej")]
+layout_mode = 0
+offset_left = 303.0
+offset_top = 284.0
+offset_right = 327.0
+offset_bottom = 308.0
+skill_data = SubResource("Resource_1htl4")
+progression_tier = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1220214966]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -210.0
+offset_top = -260.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=1102253304]
+layout_mode = 2
+
+[node name="SkillDisplay" parent="MarginContainer/PanelContainer" unique_id=268168858 instance=ExtResource("36_xp6rj")]
+layout_mode = 2

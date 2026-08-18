@@ -1,17 +1,13 @@
 @tool
 extends SKT_BranchFormatter
 
-@export_subgroup("Inspector Node References")
-@export var branches_parent: SKT_BranchesParent
-
-
 func _ready() -> void:
 	if not SkillTreeEvents.draw_tree.is_connected(format_visuals_of_branch):
 		SkillTreeEvents.draw_tree.connect(format_visuals_of_branch)
 
 
 func format_visuals_of_branch():
-	for branch in branches_parent.get_branches():
+	for branch in SKT.branches_parent.get_branches():
 		if branch.unlock_condition == null or not branch.unlock_condition.is_condition_reached(branch):
 			set_locked(branch)
 		else:

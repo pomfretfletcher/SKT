@@ -11,3 +11,13 @@ func stringified_vector_to_v2(vector) -> Vector2:
 	var parts = vector.split(",")
 	var result: Vector2 = Vector2(float(parts[0]), float(parts[1]))
 	return result
+
+
+func get_skills_resulting_from_node(node: SkillNode, node_dict: Array[SkillNode]):
+	for r_branch: SkillBranch in node.result_branches:
+		if r_branch.end_node == null:
+			continue
+		if r_branch.end_node in node_dict:
+			continue
+		node_dict.append(r_branch.end_node)
+		get_skills_resulting_from_node(r_branch.end_node, node_dict)
