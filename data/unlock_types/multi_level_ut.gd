@@ -35,7 +35,7 @@ var _changing_current_level_by_script := false
 		# It will log this error so debugging can be taken out while not causing 
 		# problems with running the validity checks.
 		if attached_node == null:
-			SkillTreeRequests.request_log_issue.emit("Attached node of " + str(self) + " is null.")
+			MessageLogger.log_issue("Attached node of " + str(self) + " is null.")
 			return
 
 		var result: ValidityStatement = SkillTreeChecks.is_new_max_level_valid(v, self)
@@ -47,7 +47,7 @@ var _changing_current_level_by_script := false
 			current_level = current_level
 			size_point_cost_array()
 		else:
-			SkillTreeRequests.request_log_issue.emit(result.reason)
+			MessageLogger.log_issue(result.reason)
 ## The amount of times that the unlock type/skill node has been progressed.
 @export var current_level: int = 0:
 	set(v):
@@ -80,7 +80,7 @@ var _changing_current_level_by_script := false
 		elif result.validity == true:
 			current_level = clampi(v, 0, max_level)
 		else:
-			SkillTreeRequests.request_log_issue.emit(result.reason)
+			MessageLogger.log_issue(result.reason)
 ## The cost to progress to each level. Each element represents the cost to progress
 ## to the next level. Due to zero-indexing, the 0-index element is the cost to level
 ## to level 1, etc.
@@ -99,10 +99,10 @@ var _changing_current_level_by_script := false
 #region Inspector Tool Buttons
 @export_tool_button("Level Up")
 var but_levelup = func():
-	SkillTreeRequests.request_progress_skill.emit(attached_node)
+	attached_node.tree.request_progress_skill.emit(attached_node)
 @export_tool_button("Level Down")
 var but_leveldown = func():
-	SkillTreeRequests.request_regress_skill.emit(attached_node)
+	attached_node.tree.request_regress_skill.emit(attached_node)
 #endregion
 
 ## Internal function that will add or remove elements from the point_cost_per_level

@@ -15,17 +15,20 @@ arrow = NodePath("Arrow")
 shader_arrow = NodePath("Arrow/ShaderArrow")
 
 [node name="NodeArc" type="ColorRect" parent="." unique_id=2120933096]
+z_index = 1
 layout_mode = 1
 offset_right = 50.0
 offset_bottom = 5.0
 
 [node name="ShaderArc" type="ColorRect" parent="NodeArc" unique_id=1073188770]
+z_index = 1
 layout_mode = 0
 offset_right = 50.0
 offset_bottom = 5.0
 color = Color(0, 0, 0, 1)
 
 [node name="Arrow" type="TextureRect" parent="." unique_id=1692539048]
+z_index = 2
 layout_mode = 0
 offset_top = -1.0
 offset_right = 12.0
@@ -34,6 +37,7 @@ texture = ExtResource("3_oumg0")
 expand_mode = 1
 
 [node name="ShaderArrow" type="TextureRect" parent="Arrow" unique_id=1010241418]
+z_index = 2
 layout_mode = 0
 offset_right = 12.0
 offset_bottom = 12.0

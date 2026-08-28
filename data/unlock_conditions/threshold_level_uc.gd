@@ -15,7 +15,7 @@ var _changing_threshold_level_for_test := false
 		elif result.validity == true:
 			threshold_level = v
 		else:
-			SkillTreeRequests.request_log_issue.emit(result.reason)
+			MessageLogger.log_issue(result.reason)
 
 
 func is_condition_reached(branch: SkillBranch) -> bool:

@@ -1,25 +1,6 @@
 @tool
+class_name SkillTreeChecks
 extends Node
-
-## Used by any node that has exported data that refers to the progression tier system. If said
-## system is not in use, it expects that node to set the property usage to not be shown in the
-## editor.
-func should_show_progression_tiers() -> bool:
-	if SKT.tree == null:
-		return false
-	# Returns whether exported data should be shown
-	return SKT.progression_tier_manager.use_progression_tiers
-
-
-## Used by any node that has exported data that refers to the upgrade cost system. If said
-## system is not in use, it expects that node to set the property usage to not be shown in the
-## editor.
-func should_show_upgrade_costs() -> bool:
-	if SKT.tree == null:
-		return false
-	# Returns whether exported data should be shown
-	return SKT.upgrade_cost_manager.upgrade_type != SKT_UpgradeCostManager.UpgradeType.NONE
-
 
 ## For use by skill data resources owned by skill nodes. Allows storing validity checking
 ## externally to that class, in order to abstract use of it.
@@ -35,7 +16,7 @@ func should_show_upgrade_costs() -> bool:
 ## Validity examples include deciding whether an unlock type is suitable given the unlock
 ## conditions reliant on it, such as not being able to have a single level skill when a branch
 ## resulting from that skill requires a threshold level to be active.
-func is_new_unlock_type_valid(ut: UnlockType, node: SkillNode) -> ValidityStatement:
+static func is_new_unlock_type_valid(ut: UnlockType, node: SkillNode) -> ValidityStatement:
 	#region Null Value Checks
 	if node == null:
 		return ValidityStatement.new(false, "Given node parameter is null.")
@@ -76,7 +57,7 @@ func is_new_unlock_type_valid(ut: UnlockType, node: SkillNode) -> ValidityStatem
 ## Validity examples include deciding whether an unlock condition requires a levelling skill
 ## at the start of the branch and therefore returning false validity if the start node only
 ## has one progress step.
-func is_new_unlock_condition_valid(uc: UnlockCondition, branch: SkillBranch) -> ValidityStatement:
+static func is_new_unlock_condition_valid(uc: UnlockCondition, branch: SkillBranch) -> ValidityStatement:
 	# Get easier access to branch components
 	var start_node: SkillNode = branch.start_node
 	var end_node: SkillNode = branch.end_node
@@ -131,7 +112,7 @@ func is_new_unlock_condition_valid(uc: UnlockCondition, branch: SkillBranch) -> 
 ## This is a function that should be changed by users of the SKT software if they add more
 ## interactions with the threshold level unlock condition. Do avoid interfering with already 
 ## present checks in order to maintain tree logic.
-func is_new_threshold_level_valid(new_v: int, uc: ThresholdLevel_UC) -> ValidityStatement:
+static func is_new_threshold_level_valid(new_v: int, uc: ThresholdLevel_UC) -> ValidityStatement:
 	var branch: SkillBranch = uc.attached_branch
 	var old_v: int = uc.threshold_level
 
@@ -182,7 +163,7 @@ func is_new_threshold_level_valid(new_v: int, uc: ThresholdLevel_UC) -> Validity
 ## This is a function that should be changed by users of the SKT software if they add more
 ## interactions with the multi level unlock type and its max level property. Do avoid interfering 
 ## with already present checks in order to maintain tree logic.
-func is_new_max_level_valid(new_v: int, ut: MultiLevel_UT) -> ValidityStatement:
+static func is_new_max_level_valid(new_v: int, ut: MultiLevel_UT) -> ValidityStatement:
 	var node: SkillNode = ut.attached_node
 
 	#region Null Value Checks
@@ -244,7 +225,7 @@ func is_new_max_level_valid(new_v: int, ut: MultiLevel_UT) -> ValidityStatement:
 ## This is a function that should be changed by users of the SKT software if they add more
 ## interactions with the multi level unlock type and its current level property. Do avoid 
 ## interfering with already present checks in order to maintain tree logic.
-func is_new_current_level_valid(new_v: int, ut: MultiLevel_UT) -> ValidityStatement:
+static func is_new_current_level_valid(new_v: int, ut: MultiLevel_UT) -> ValidityStatement:
 	var max_level: int = ut.max_level
 	var cur_v: int = ut.current_level
 	var node: SkillNode = ut.attached_node

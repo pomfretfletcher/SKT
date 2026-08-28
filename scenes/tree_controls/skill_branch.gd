@@ -3,13 +3,28 @@
 class_name SkillBranch
 extends SkillTreeControl
 
-@export var start_node: SkillNode
+@export var start_node: SkillNode:
+	set(v):
+		if start_node != null and self in start_node.result_branches:
+			start_node.result_branches.erase(self)
+		start_node = v
+		if start_node != null:
+			start_node.result_branches.append(self)
 @export var end_node: SkillNode:
 	set(v):
 		if not _setup:
+			if end_node != null and self in end_node.previous_branches:
+				end_node.previous_branches.erase(self)
 			end_node = v
+			if end_node != null:
+				end_node.previous_branches.append(self)
 			return
-		if v == null:
+		if v == null and end_node != null:
+			if len(end_node.previous_branches) and end_node.is_unlocked():
+				MessageLogger.log_issue("Cannot change end node to null as this branch is the only branch to a partially unlocked node.")
+		elif v == null:
+			if end_node != null and self in end_node.previous_branches:
+				end_node.previous_branches.erase(self)
 			end_node = v
 			return
 
@@ -19,9 +34,17 @@ extends SkillTreeControl
 		var nd: Array[SkillNode]
 		SkillTreeFunctions.get_skills_resulting_from_node(v, nd)
 		if start_node != null and start_node in nd:
-			SkillTreeRequests.request_log_issue.emit("Cannot choose end node as it would cause a loop in the tree.")
+			MessageLogger.log_issue("Cannot choose end node as it would cause a loop in the tree.")
 			return
+		if v == null and end_node != null:
+			if len(end_node.previous_branches) and end_node.is_unlocked():
+				MessageLogger.log_issue("Cannot change end node to null as this branch is the only branch to a partially unlocked node.")
+		
+		if end_node != null and self in end_node.previous_branches:
+			end_node.previous_branches.erase(self)
 		end_node = v
+		if end_node != null:
+			end_node.previous_branches.append(self)
 
 @export var unlock_condition: UnlockCondition:
 	set(v):
@@ -44,7 +67,7 @@ extends SkillTreeControl
 			if unlock_condition != null:
 				unlock_condition.attached_branch = self
 		else:
-			SkillTreeRequests.request_log_issue.emit(result.reason)
+			MessageLogger.log_issue(result.reason)
 var branch_follow_points: Array[BranchFollowPoint]:
 	get:
 		var result: Array[BranchFollowPoint] = []
@@ -64,34 +87,26 @@ var branch_follow_points: Array[BranchFollowPoint]:
 @export_subgroup("Tool Buttons")
 @export_tool_button("Create Follow Point")
 var but_createfollowpoint = func():
-	SkillTreeRequests.request_create_followpoint.emit(self)
+	tree.request_create_followpoint.emit(self)
 
 var _setup := false
+var tree: SKT_Tree
 
 
-func _init() -> void:
-	SkillTreeEvents.tree_setup.connect(
+func setup_data(t: SKT_Tree) -> void:
+	tree = t
+	tree.tree_setup.connect(
 		func():
 			_setup = true
 	)
-	SkillTreeEvents.update_tree.connect(
-		func():
-			_setup = true
-	)
-	if not SkillTreeEvents.update_tree.is_connected(store_branch_connections_in_nodes):
-		SkillTreeEvents.update_tree.connect(store_branch_connections_in_nodes)
-
-
-func store_branch_connections_in_nodes():
-	if start_node != null and self not in start_node.result_branches:
-		start_node.result_branches.append(self)
-	if end_node != null and self not in end_node.previous_branches:
-		end_node.previous_branches.append(self)
+	
+	if unlock_condition != null:
+		unlock_condition.attached_branch = self
 
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		TreeInteractionSignals.branch_selected.emit(self)
+		tree.branch_selected.emit(self)
 
 #region - Warnings and Inspector Display Methods -
 func _enter_tree() -> void:

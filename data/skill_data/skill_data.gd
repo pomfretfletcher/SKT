@@ -17,23 +17,22 @@ extends Resource
 		elif result.validity == true:
 			unlock_type = v
 			if unlock_type != null and attached_node != null:
-				unlock_type.attached_node = attached_node
+				unlock_type.setup_data(attached_node)
 		else:
-			SkillTreeRequests.request_log_issue.emit(result.reason)
+			MessageLogger.log_issue(result.reason)
 @export var description: String
 @export var icon: Texture2D
 @export var shader_icon: Texture2D
-var attached_node: SkillNode:
-	set(v):
-		attached_node = v
-		if unlock_type != null:
-			unlock_type.attached_node = attached_node
+var attached_node: SkillNode
 
 var _setup := false
 
 
-func _init() -> void:
-	SkillTreeEvents.tree_setup.connect(
+func setup_data(n: SkillNode) -> void:
+	attached_node = n
+	if unlock_type != null:
+		unlock_type.setup_data(n)
+	attached_node.tree.tree_setup.connect(
 		func():
 			_setup = true
 	)

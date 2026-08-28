@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://dohpaqjt3ityy"]
+
+[ext_resource type="Texture2D" uid="uid://mh8xflmjg52j" path="res://assets/square.png" id="1_lwpcd"]
+[ext_resource type="Script" uid="uid://c5rlphutj6dcn" path="res://scenes/tree/skill_display/skill_display.gd" id="2_a3tbu"]
+[ext_resource type="Texture2D" uid="uid://kalhaq3uaabl" path="res://assets/grey_tick_box.png" id="3_jq0io"]
+[ext_resource type="Texture2D" uid="uid://bl2p5xnma6dui" path="res://assets/yellow_tick_box.png" id="4_4gukr"]
+[ext_resource type="Texture2D" uid="uid://dhnqgn2g0x5c5" path="res://assets/green_tick_box.png" id="5_2puyb"]
+[ext_resource type="Texture2D" uid="uid://bph482xfsudjr" path="res://assets/essence_n_energy/tile007.png" id="6_vhpwe"]
+[ext_resource type="Texture2D" uid="uid://bjmp4f63if3rl" path="res://assets/line.png" id="7_6ruv8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i7in8"]
+atlas = ExtResource("1_lwpcd")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_62atk"]
+texture = SubResource("AtlasTexture_i7in8")
+texture_margin_left = 1.0
+texture_margin_top = 1.0
+texture_margin_right = 1.0
+texture_margin_bottom = 1.0
+region_rect = Rect2(1, 1, 48, 48)
+
+[sub_resource type="Theme" id="Theme_0bhws"]
+SkillDisplay/base_type = &"Panel"
+SkillDisplay/styles/panel = SubResource("StyleBoxTexture_62atk")
+
+[sub_resource type="LabelSettings" id="LabelSettings_4a6qg"]
+font_size = 14
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_aexo6"]
+font_size = 10
+font_color = Color(0, 0, 0, 1)
+
+[node name="SkillDisplay" type="Panel" unique_id=268168858 node_paths=PackedStringArray("skill_name", "skill_icon", "skill_description", "unlock_tick_box", "progress_label")]
+custom_minimum_size = Vector2(200, 250)
+theme = SubResource("Theme_0bhws")
+theme_type_variation = &"SkillDisplay"
+script = ExtResource("2_a3tbu")
+locked_tick_box_texture = ExtResource("3_jq0io")
+partial_unlocked_tick_box_texture = ExtResource("4_4gukr")
+fully_unlocked_tick_box_texture = ExtResource("5_2puyb")
+skill_name = NodePath("MarginContainer/SkillName")
+skill_icon = NodePath("MarginContainer2/SkillIcon")
+skill_description = NodePath("MarginContainer3/SkillDescription")
+unlock_tick_box = NodePath("MarginContainer5/UnlockTickBox")
+progress_label = NodePath("MarginContainer6/ProgressLabel")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2141419413]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 90
+theme_override_constants/margin_right = 10
+
+[node name="SkillName" type="Label" parent="MarginContainer" unique_id=667639163]
+layout_mode = 2
+size_flags_vertical = 0
+text = "D"
+label_settings = SubResource("LabelSettings_4a6qg")
+
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1389129569]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+
+[node name="SkillIcon" type="TextureRect" parent="MarginContainer2" unique_id=693333703]
+custom_minimum_size = Vector2(80, 80)
+custom_maximum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource("6_vhpwe")
+
+[node name="MarginContainer3" type="MarginContainer" parent="." unique_id=66030265]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 120
+theme_override_constants/margin_right = 10
+
+[node name="SkillDescription" type="Label" parent="MarginContainer3" unique_id=1257933872]
+layout_mode = 2
+size_flags_vertical = 0
+label_settings = SubResource("LabelSettings_4a6qg")
+
+[node name="MarginContainer4" type="MarginContainer" parent="." unique_id=175056196]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 110
+
+[node name="SeperatorLine" type="TextureRect" parent="MarginContainer4" unique_id=1556454304]
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("7_6ruv8")
+
+[node name="MarginContainer5" type="MarginContainer" parent="." unique_id=1508315650]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 170
+theme_override_constants/margin_top = 85
+
+[node name="UnlockTickBox" type="TextureRect" parent="MarginContainer5" unique_id=2113444288]
+custom_maximum_size = Vector2(25, 25)
+layout_mode = 2
+texture = ExtResource("5_2puyb")
+
+[node name="MarginContainer6" type="MarginContainer" parent="." unique_id=517962122]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 33
+
+[node name="ProgressLabel" type="Label" parent="MarginContainer6" unique_id=1455829900]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+label_settings = SubResource("LabelSettings_aexo6")
+horizontal_alignment = 2

@@ -13,7 +13,7 @@ extends SkillTreeControl
 	set(v):
 		for branch in result_branches:
 			if branch.end_node.progression_tier < v:
-				SkillTreeRequests.request_log_issue.emit("Cannot change progression tier as the tier for this skill must be less than or equal to the tier for any resulting skills.")
+				MessageLogger.log_issue("Cannot change progression tier as the tier for this skill must be less than or equal to the tier for any resulting skills.")
 				return
 		progression_tier = v
 
@@ -29,6 +29,17 @@ var can_be_regressed := true
 
 var silence_signals := false
 
+@warning_ignore("unused_signal")
+signal skill_progressed
+@warning_ignore("unused_signal")
+signal skill_regressed
+@warning_ignore("unused_signal")
+signal skill_unlocked
+@warning_ignore("unused_signal")
+signal skill_locked
+@warning_ignore("unused_signal")
+signal skill_completed
+
 # Allows a form of abstraction by not needing to call
 # xxx_node.skill_data.unlock_type
 # Makes code cleaner to read and smaller
@@ -41,14 +52,23 @@ var unlock_type: UnlockType:
 		return skill_data.unlock_type
 
 var ready_has_occured := false
+var tree: SKT_Tree
 
+
+func setup_data(t: SKT_Tree):
+	tree = t
+	
+	if skill_data != null:
+		skill_data.attached_node = self
 
 func _ready() -> void:
 	set_notify_transform(true)
 	ready_has_occured = true
-	if not SkillTreeEvents.update_tree.is_connected(update_name):
-		SkillTreeEvents.update_tree.connect(update_name)
-	TreeInteractionSignals.node_selected.connect(
+	
+	if not skill_data.changed.is_connected(update_name):
+		skill_data.changed.connect(update_name)
+		
+	tree.node_selected.connect(
 		func(node: SkillNode):
 			can_be_moved_in_inspector = (node == self)
 	)
@@ -72,7 +92,7 @@ func is_completed() -> bool:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		TreeInteractionSignals.node_selected.emit(self)
+		tree.node_selected.emit(self)
 
 
 var can_be_moved_in_inspector := false
@@ -81,7 +101,7 @@ var can_be_moved_in_inspector := false
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSFORM_CHANGED:
 		if not silence_signals and can_be_moved_in_inspector:
-			TreeInteractionSignals.node_moved.emit(self)
+			tree.node_moved.emit(self)
 
 #region - Warnings and Inspector Display Methods -
 func _enter_tree() -> void:
@@ -105,6 +125,6 @@ func _validate_property(property: Dictionary) -> void:
 	if not ready_has_occured:
 		return
 	if property.name == "progression_tier":
-		if not SkillTreeChecks.should_show_progression_tiers():
+		if not tree.progression_tier_manager.use_progression_tiers:
 			property.usage = PROPERTY_USAGE_NO_EDITOR
 #endregion

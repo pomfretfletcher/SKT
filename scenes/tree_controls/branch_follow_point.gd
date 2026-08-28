@@ -12,9 +12,13 @@ extends SkillTreeControl
 @export var shader_arrow: TextureRect
 
 var silence_signals := false
+var tree: SKT_Tree
 
+
+func setup_data(t: SKT_Tree):
+	tree = t
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSFORM_CHANGED:
 		if not silence_signals:
-			TreeInteractionSignals.followpoint_moved.emit(self)
+			tree.followpoint_moved.emit(self)

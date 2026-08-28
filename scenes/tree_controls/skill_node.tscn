@@ -23,6 +23,7 @@ shader_orb = NodePath("NodeOrb/ShaderOrb")
 
 [node name="NodeOrb" type="TextureRect" parent="." unique_id=548561819]
 self_modulate = Color(0.8638137, 0.86381376, 0.8638137, 1)
+z_index = 3
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -39,6 +40,7 @@ texture = ExtResource("4_ev4xc")
 expand_mode = 1
 
 [node name="ShaderOrb" type="TextureRect" parent="NodeOrb" unique_id=1851121753]
+z_index = 3
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

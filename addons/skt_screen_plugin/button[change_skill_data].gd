@@ -2,13 +2,14 @@
 extends SKT_Button
 
 var selected_node: SkillNode
-
+@export var panel: SKT
 
 func _ready() -> void:
 	set_button_inactive()
-	TreeInteractionSignals.node_selected.connect(
-		func(node):
-			selected_node = node
-			set_button_active()
+	panel.selected_control_changed.connect(
+		func(control):
+			if control is SkillNode:
+				set_button_active()
+			else:
+				set_button_inactive()
 	)
-	TreeInteractionSignals.tree_control_deselected.connect(set_button_inactive)

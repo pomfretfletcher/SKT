@@ -10,8 +10,9 @@ var attached_node: SkillNode
 var _setup := false
 
 
-func _init() -> void:
-	SkillTreeEvents.tree_setup.connect(
+func setup_data(n: SkillNode) -> void:
+	attached_node = n
+	attached_node.tree.tree_setup.connect(
 		func():
 			_setup = true
 	)
@@ -54,5 +55,5 @@ func _validate_property(property: Dictionary) -> void:
 	if not _setup:
 		return
 	if property.name == UPGRADE_COST_PROPERTY_NAME:
-		if not SkillTreeChecks.should_show_upgrade_costs():
+		if not attached_node.tree.upgrade_cost_manager.upgrade_type != SKT_UpgradeCostManager.UpgradeType.NONE:
 			property.usage = PROPERTY_USAGE_NO_EDITOR

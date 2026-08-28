@@ -11,7 +11,7 @@ func _handles(object):
 func _edit(object: Object) -> void:
 	if cur_obj != object:
 		if object is SkillTreeControl:
-			TreeInteractionSignals.tree_control_deselected.emit(object)
+			SKT.current_tree.tree_control_deselected.emit(object)
 
 	if object != cur_obj:
 		cur_obj = object as SkillTreeControl
@@ -20,10 +20,10 @@ func _edit(object: Object) -> void:
 
 	if cur_obj is SkillNode:
 		var skill_node: SkillNode = cur_obj
-		TreeInteractionSignals.node_selected.emit(skill_node)
+		SKT.current_tree.node_selected.emit(skill_node)
 	if cur_obj is SkillBranch:
 		var skill_branch: SkillBranch = cur_obj
-		TreeInteractionSignals.branch_selected.emit(skill_branch)
+		SKT.current_tree.branch_selected.emit(skill_branch)
 
 
 func _enter_tree() -> void:
@@ -43,5 +43,5 @@ func _on_msc(screen_name: String):
 		selection.clear()
 
 		if cur_obj != null:
-			TreeInteractionSignals.tree_control_deselected.emit(cur_obj)
+			SKT.current_tree.tree_control_deselected.emit(cur_obj)
 			cur_obj = null

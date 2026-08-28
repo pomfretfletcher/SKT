@@ -7,8 +7,9 @@ var attached_branch: SkillBranch
 var _setup := false
 
 
-func _init() -> void:
-	SkillTreeEvents.tree_setup.connect(
+func setup_data(b: SkillBranch) -> void:
+	attached_branch = b
+	attached_branch.tree.tree_setup.connect(
 		func():
 			_setup = true
 	)
